@@ -1,4 +1,4 @@
-package com.example.mobiestudy;
+package com.example.mobilestudy;
 
 import org.junit.Test;
 
