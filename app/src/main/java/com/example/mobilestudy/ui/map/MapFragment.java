@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.mobilestudy.R;
+import com.example.mobilestudy.databinding.FragmentMapBinding;
 import com.example.mobilestudy.ui.home.HomeFragment;
 
 
 public class MapFragment extends Fragment {
 
+    private FragmentMapBinding binding;
     private OnSettingsButtonClickListener settingsButtonClickListener;
 
     @Override
@@ -32,10 +34,10 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        binding = FragmentMapBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        ImageButton settingsButton = view.findViewById(R.id.settings_button);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        binding.settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 settingsButtonClickListener.onSettingsButtonClick();

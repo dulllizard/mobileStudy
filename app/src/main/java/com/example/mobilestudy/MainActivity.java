@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.example.mobilestudy.databinding.ActivityMainBinding;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 import com.example.mobilestudy.ui.favorites.FavoritesFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
@@ -23,14 +24,16 @@ public class MainActivity extends AppCompatActivity
         FavoritesFragment.OnSettingsButtonClickListener,
         MapFragment.OnSettingsButtonClickListener {
 
+    private ActivityMainBinding binding;
     private MeowBottomNavigation bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNavigation = binding.bottomNavigation;
 
         replace(new HomeFragment());
         bottomNavigation.show(2, true);
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     private void replace(Fragment fragment) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.framelayout, fragment);
+        transaction.replace(binding.framelayout.getId(), fragment);
         transaction.commit();
     }
 }

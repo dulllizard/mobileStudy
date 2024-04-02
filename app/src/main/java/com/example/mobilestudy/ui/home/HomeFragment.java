@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.mobilestudy.R;
+import com.example.mobilestudy.databinding.FragmentHomeBinding;
 
 
 public class HomeFragment extends Fragment {
 
+    private FragmentHomeBinding binding;
     private OnSettingsButtonClickListener settingsButtonClickListener;
 
     @Override
@@ -28,14 +30,13 @@ public class HomeFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        ImageButton settingsButton = view.findViewById(R.id.settings_button);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        binding.settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 settingsButtonClickListener.onSettingsButtonClick();

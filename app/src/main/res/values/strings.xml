@@ -16,4 +16,15 @@
     <string name="cityName">Ваш город</string>
     <string name="concreteCityName">Красноярск</string>
     <string name="concreteEventName">Выставки</string>
+    
+    <string-array name="cities">
+        <item>Красноярск</item>
+        <item>Москва</item>
+        <item>Новосибирск</item>
+    </string-array>
+
+    <string-array name="events">
+        <item>Выставки</item>
+        <item>Концерты</item>
+    </string-array>
 </resources>

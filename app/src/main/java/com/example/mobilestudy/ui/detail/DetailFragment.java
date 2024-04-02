@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.mobilestudy.R;
+import com.example.mobilestudy.databinding.FragmentDetailBinding;
 
 
 public class DetailFragment extends Fragment {
 
+    private FragmentDetailBinding binding;
     private OnBackButtonClickListener backButtonClickListener;
 
     @Override
@@ -31,10 +33,10 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        binding = FragmentDetailBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        ImageButton settingsButton = view.findViewById(R.id.backButton);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 backButtonClickListener.onBackButtonClick();

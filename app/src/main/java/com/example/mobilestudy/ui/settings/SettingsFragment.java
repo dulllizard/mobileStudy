@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 
 import com.example.mobilestudy.R;
+import com.example.mobilestudy.databinding.FragmentSettingsBinding;
 
 
 public class SettingsFragment extends Fragment {
 
+    private FragmentSettingsBinding binding;
     private OnBackButtonClickListener backButtonClickListener;
 
     @Override
@@ -28,14 +31,21 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        String[] cities = getResources().getStringArray(R.array.cities);
+        String[] events = getResources().getStringArray(R.array.events);
+        ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, cities);
+        ArrayAdapter<String> eventsAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, events);
+        binding.dropdownCities.setAdapter(citiesAdapter);
+        binding.dropdownEvents.setAdapter(eventsAdapter);
+
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 backButtonClickListener.onBackButtonClick();
