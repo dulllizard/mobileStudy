@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">MobieStudy</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cardGoingButton">пойду</string>
     <string name="cardImageDescription">Пример изображения</string>
     <string name="cardEventName">Художественный музей имени Сурикова</string>
@@ -14,4 +12,8 @@
     <string name="mapTitle">События на карте</string>
     <string name="mapImageDescription">Пример карты</string>
     <string name="mapMarkDescription">Метка события</string>
+    <string name="eventName">Ваше событие</string>
+    <string name="cityName">Ваш город</string>
+    <string name="concreteCityName">Красноярск</string>
+    <string name="concreteEventName">Выставки</string>
 </resources>
