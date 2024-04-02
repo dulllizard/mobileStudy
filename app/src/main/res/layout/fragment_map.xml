@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.map.MapFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/mapTitle"
+                android:textSize="28sp" />
+
+            <LinearLayout
+                android:id="@+id/searchLayout"
+                android:layout_width="370dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp">
+
+                    <SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_bold" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <ImageButton
+                        android:id="@+id/settings_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:contentDescription="@string/settingsButtonDescription"
+                        android:src="@drawable/baseline_settings_24" />
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="350dp"
+                android:layout_height="500dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp">
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/mapImageDescription"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/map_example" />
+
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="314dp"
+                    android:layout_marginEnd="188dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/mapMarkDescription"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mark" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
