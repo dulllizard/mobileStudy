@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity
         implements HomeFragment.OnSettingsButtonClickListener,
         SettingsFragment.OnBackButtonClickListener,
         DetailFragment.OnBackButtonClickListener,
-        FavoritesFragment.OnSettingsButtonClickListener {
+        FavoritesFragment.OnSettingsButtonClickListener,
+        MapFragment.OnSettingsButtonClickListener {
 
     private MeowBottomNavigation bottomNavigation;
 
