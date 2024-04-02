@@ -9,17 +9,31 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-
-import com.example.mobilestudy.R;
 import com.example.mobilestudy.databinding.FragmentDetailBinding;
 
 
+/**
+ * Фрагмент, отображающий детальную информацию.
+ */
 public class DetailFragment extends Fragment {
 
+    /**
+     * Поле для привязки макета фрагмента
+     */
     private FragmentDetailBinding binding;
+
+    /**
+     * Поле для слушателя нажатия кнопки "назад"
+     */
     private OnBackButtonClickListener backButtonClickListener;
 
+    /**
+     * Вызывается, когда фрагмент прикрепляется к контексту (активности).
+     * Устанавливает слушатель нажатия на кнопку "Назад".
+     *
+     * @param context Контекст, к которому прикреплен фрагмент
+     * @throws ClassCastException Если контекст не реализует интерфейс OnBackButtonClickListener
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -30,6 +44,14 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Метод, вызываемый при создании представления фрагмента.
+     *
+     * @param inflater           Инфлейтер для раздувания макета.
+     * @param container          Контейнер для раздутого макета.
+     * @param savedInstanceState Сохраненное состояние фрагмента, если оно есть.
+     * @return Возвращает представление фрагмента.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +68,13 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Интерфейс для обработки нажатия кнопки "назад".
+     */
     public interface OnBackButtonClickListener {
+        /**
+         * Вызывается при нажатии кнопки "назад".
+         */
         void onBackButtonClick();
     }
 }

@@ -16,11 +16,26 @@ import com.example.mobilestudy.R;
 import com.example.mobilestudy.databinding.FragmentSettingsBinding;
 
 
+/**
+ * Фрагмент настроек, позволяющий пользователю выбирать город и тип событий.
+ */
 public class SettingsFragment extends Fragment {
 
+    /**
+     * Привязка к макету фрагмента
+     */
     private FragmentSettingsBinding binding;
+
+    /**
+     * Слушатель нажатия кнопки "назад"
+     */
     private OnBackButtonClickListener backButtonClickListener;
 
+    /**
+     * Метод, вызываемый при присоединении фрагмента к его контексту.
+     *
+     * @param context Контекст, к которому присоединяется фрагмент.
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -31,6 +46,14 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    /**
+     * Метод, вызываемый при создании представления фрагмента.
+     *
+     * @param inflater           Инфлейтер для раздувания макета.
+     * @param container          Контейнер для раздутого макета.
+     * @param savedInstanceState Сохраненное состояние фрагмента, если оно есть.
+     * @return Возвращает представление фрагмента.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +78,14 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Интерфейс для обработки нажатия кнопки "назад".
+     */
     public interface OnBackButtonClickListener {
+
+        /**
+         * Вызывается при нажатии кнопки "назад".
+         */
         void onBackButtonClick();
     }
 }

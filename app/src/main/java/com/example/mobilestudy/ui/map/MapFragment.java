@@ -16,11 +16,26 @@ import com.example.mobilestudy.databinding.FragmentMapBinding;
 import com.example.mobilestudy.ui.home.HomeFragment;
 
 
+/**
+ * Фрагмент, отображающий карту событий.
+ */
 public class MapFragment extends Fragment {
 
+    /**
+     * Поле для привязки макета фрагмента
+     */
     private FragmentMapBinding binding;
+
+    /**
+     * Поле для слушателя нажатия кнопки настроек
+     */
     private OnSettingsButtonClickListener settingsButtonClickListener;
 
+    /**
+     * Метод, вызываемый при присоединении фрагмента к его контексту.
+     *
+     * @param context Контекст, к которому присоединяется фрагмент.
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -31,6 +46,14 @@ public class MapFragment extends Fragment {
         }
     }
 
+    /**
+     * Метод, вызываемый при создании представления фрагмента.
+     *
+     * @param inflater           Инфлейтер для раздувания макета.
+     * @param container          Контейнер для раздутого макета.
+     * @param savedInstanceState Сохраненное состояние фрагмента, если оно есть.
+     * @return Возвращает представление фрагмента.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,7 +70,14 @@ public class MapFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Интерфейс для обработки нажатия кнопки настроек.
+     */
     public interface OnSettingsButtonClickListener {
+
+        /**
+         * Вызывается при нажатии кнопки настроек.
+         */
         void onSettingsButtonClick();
     }
 }

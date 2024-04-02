@@ -24,9 +24,21 @@ public class MainActivity extends AppCompatActivity
         FavoritesFragment.OnSettingsButtonClickListener,
         MapFragment.OnSettingsButtonClickListener {
 
+    /**
+     * Привязка к макету активности
+     */
     private ActivityMainBinding binding;
+
+    /**
+     * Нижняя навигационная панель
+     */
     private MeowBottomNavigation bottomNavigation;
 
+    /**
+     * Метод, вызываемый при создании активности.
+     *
+     * @param savedInstanceState Сохраненное состояние активности, если оно есть.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,17 +76,28 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Обработчик нажатия кнопки "назад".
+     */
     @Override
     public void onBackButtonClick() {
         replace(new HomeFragment());
         bottomNavigation.show(2, true);
     }
 
+    /**
+     * Обработчик нажатия кнопки "настройки".
+     */
     @Override
     public void onSettingsButtonClick() {
         replace(new SettingsFragment());
     }
 
+    /**
+     * Метод для замены текущего фрагмента.
+     *
+     * @param fragment Фрагмент, который нужно отобразить.
+     */
     private void replace(Fragment fragment) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
