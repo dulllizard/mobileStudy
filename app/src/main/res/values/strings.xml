@@ -8,4 +8,5 @@
     <string name="cardEventPlace">просп. Мира, д. 12</string>
     <string name="settingsButtonDescription">Кнопка настроек</string>
     <string name="homeTitle">События в Красноярске</string>
+    <string name="favoritesTiltle">Мои события</string>
 </resources>
