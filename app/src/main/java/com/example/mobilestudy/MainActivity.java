@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.mobilestudy.databinding.ActivityMainBinding;
+import com.example.mobilestudy.ui.FragmentFactory;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 import com.example.mobilestudy.ui.favorites.FavoritesFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity
      */
     private MeowBottomNavigation bottomNavigation;
 
+    private FragmentFactory fragmentFactory;
+
     /**
      * Метод, вызываемый при создании активности.
      *
@@ -45,9 +48,10 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        fragmentFactory = new FragmentFactory();
         bottomNavigation = binding.bottomNavigation;
 
-        replace(new HomeFragment());
+        replace(fragmentFactory.getHomeFragment());
         bottomNavigation.show(2, true);
 
         bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.baseline_favorite_24));
@@ -60,15 +64,15 @@ public class MainActivity extends AppCompatActivity
 
                 switch (model.getId()) {
                     case 1:
-                        replace(new FavoritesFragment());
+                        replace(fragmentFactory.getFavoritesFragment());
                         break;
 
                     case 2:
-                        replace(new HomeFragment());
+                        replace(fragmentFactory.getHomeFragment());
                         break;
 
                     case 3:
-                        replace(new MapFragment());
+                        replace(fragmentFactory.getMapFragment());
                         break;
                 }
                 return null;
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onBackButtonClick() {
-        replace(new HomeFragment());
+        replace(fragmentFactory.getHomeFragment());
         bottomNavigation.show(2, true);
     }
 
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onSettingsButtonClick() {
-        replace(new SettingsFragment());
+        replace(fragmentFactory.getSettingsFragment());
     }
 
     /**
