@@ -6,6 +6,11 @@ public class Card {
     private String eventPlace;
     private byte[] eventPreview;
 
+    public Card(String eventName, String eventPlace) {
+        this.eventName = eventName;
+        this.eventPlace = eventPlace;
+    }
+
     public Card(String eventName, String eventPlace, byte[] eventPreview) {
         this.eventName = eventName;
         this.eventPlace = eventPlace;
