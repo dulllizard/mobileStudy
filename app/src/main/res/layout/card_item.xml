@@ -31,6 +31,18 @@
             android:text="Event Place"
             android:textSize="14sp" />
 
+        <Button
+            android:id="@+id/cardGoingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_margin="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/colorPassive"
+            android:text="Going"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

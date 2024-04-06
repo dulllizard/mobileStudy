@@ -11,7 +11,9 @@ public class DummyDatabaseCard {
 
     DummyDatabaseCard() {
         cards.add(new Card(1, "Event 1", "Place 1", false));
-        cards.add(new Card(1, "Event 2", "Place 2", false));
+        cards.add(new Card(2, "Event 2", "Place 2", false));
+        cards.add(new Card(3, "Event 3", "Place 3", true));
+        cards.add(new Card(4, "Event 4", "Place 4", true));
     }
 
     public static DummyDatabaseCard getInstance() {

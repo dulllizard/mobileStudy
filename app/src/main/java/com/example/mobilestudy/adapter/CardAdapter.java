@@ -3,6 +3,7 @@ package com.example.mobilestudy.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +18,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
         public TextView eventName, eventPlace;
+        public Button cardGoingButton;
 
         public CardViewHolder(View view) {
             super(view);
             eventName = view.findViewById(R.id.eventName);
             eventPlace = view.findViewById(R.id.eventPlace);
+            cardGoingButton = view.findViewById(R.id.cardGoingButton);
         }
     }
     public CardAdapter(List<Card> cardList) {
@@ -46,6 +49,29 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         Card card = cardList.get(position);
         holder.eventName.setText(card.getEventName());
         holder.eventPlace.setText(card.getEventPlace());
+        holder.cardGoingButton.setText(card.getIsFavorite() ? "Не пойду" : "Пойду");
+
+        holder.cardGoingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        mListener.onGoingClick(position);
+                    }
+                }
+            }
+        });
+    }
+
+    public interface OnItemClickListener {
+        void onGoingClick(int position);
+    }
+
+    private OnItemClickListener mListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
     @Override

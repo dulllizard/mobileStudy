@@ -30,6 +30,8 @@ public class HomeFragment extends Fragment {
     private CardAdapter adapter;
     private List<Card> cardList;
 
+    private DummyDatabaseCard database;
+
     /**
      * Поле для привязки макета фрагмента
      */
@@ -76,6 +78,17 @@ public class HomeFragment extends Fragment {
         adapter = new CardAdapter(cardList);
         recyclerView.setAdapter(adapter);
 
+        database = DummyDatabaseCard.getInstance();
+
+        adapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
+            @Override
+            public void onGoingClick(int position) {
+                Card selectedCard = cardList.get(position);
+                database.updateIsFavoriteById(selectedCard.getId(), !selectedCard.getIsFavorite());
+                updateNoteList();
+            }
+        });
+
         binding.settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,9 +102,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateNoteList() {
-//        List<Card> cards = new ArrayList<>();
 
-        DummyDatabaseCard database = DummyDatabaseCard.getInstance();
         List<Card> cards = database.getAllCards();
 
         cardList.clear();
