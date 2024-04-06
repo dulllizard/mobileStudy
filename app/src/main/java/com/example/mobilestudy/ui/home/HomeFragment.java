@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.adapter.CardAdapter;
+import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
 import com.example.mobilestudy.dto.Card;
 
@@ -88,10 +89,10 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateNoteList() {
-        List<Card> cards = new ArrayList<>();
+//        List<Card> cards = new ArrayList<>();
 
-        cards.add(new Card(1, "Event 1", "Place 1", false));
-        cards.add(new Card(1, "Event 2", "Place 2", false));
+        DummyDatabaseCard database = DummyDatabaseCard.getInstance();
+        List<Card> cards = database.getAllCards();
 
         cardList.clear();
         cardList.addAll(cards);

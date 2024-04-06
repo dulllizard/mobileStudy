@@ -6,11 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DummyDatabaseCard {
+    private static DummyDatabaseCard instance;
     private List<Card> cards = new ArrayList<>();
 
     DummyDatabaseCard() {
         cards.add(new Card(1, "Event 1", "Place 1", false));
         cards.add(new Card(1, "Event 2", "Place 2", false));
+    }
+
+    public static DummyDatabaseCard getInstance() {
+        if (instance == null) {
+            instance = new DummyDatabaseCard();
+        }
+        return instance;
     }
 
     public void addCard(Card card) {
@@ -48,5 +56,4 @@ public class DummyDatabaseCard {
             }
         }
     }
-
 }
