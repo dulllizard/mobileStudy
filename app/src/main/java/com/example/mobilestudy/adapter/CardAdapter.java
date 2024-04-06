@@ -54,25 +54,36 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.cardGoingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
+                if (buttonGoingListener != null) {
                     int position = holder.getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        mListener.onGoingClick(position);
+                        buttonGoingListener.onGoingClick(position);
                     }
                 }
             }
         });
     }
 
-    public interface OnItemClickListener {
+    public interface OnButtonGoingClickListener {
         void onGoingClick(int position);
     }
 
-    private OnItemClickListener mListener;
+//    public interface OnItemClickListener {
+//        void onClick(int position);
+//    }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
+//    private OnItemClickListener itemListener;
+    
+
+    private OnButtonGoingClickListener buttonGoingListener;
+
+    public void setOnButtonGoingClickListener(OnButtonGoingClickListener listener) {
+        buttonGoingListener = listener;
     }
+
+//    public void setOnItemClickListener(OnItemClickListener listener) {
+//        itemListener = listener;
+//    }
 
     @Override
     public int getItemCount() {

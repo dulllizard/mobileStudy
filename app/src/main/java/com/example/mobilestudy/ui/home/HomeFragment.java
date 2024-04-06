@@ -79,8 +79,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         database = DummyDatabaseCard.getInstance();
-
-        adapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
+        adapter.setOnButtonGoingClickListener(new CardAdapter.OnButtonGoingClickListener() {
             @Override
             public void onGoingClick(int position) {
                 Card selectedCard = cardList.get(position);

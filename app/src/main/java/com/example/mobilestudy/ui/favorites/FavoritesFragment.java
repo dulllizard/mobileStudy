@@ -82,7 +82,7 @@ public class FavoritesFragment extends Fragment {
 
         database = DummyDatabaseCard.getInstance();
 
-        adapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
+        adapter.setOnButtonGoingClickListener(new CardAdapter.OnButtonGoingClickListener() {
             @Override
             public void onGoingClick(int position) {
                 Card selectedCard = cardList.get(position);
