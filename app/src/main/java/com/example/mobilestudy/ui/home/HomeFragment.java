@@ -90,8 +90,8 @@ public class HomeFragment extends Fragment {
     public void updateNoteList() {
         List<Card> cards = new ArrayList<>();
 
-        cards.add(new Card("Event 1", "Place 1"));
-        cards.add(new Card("Event 2", "Place 2"));
+        cards.add(new Card(1, "Event 1", "Place 1", false));
+        cards.add(new Card(1, "Event 2", "Place 2", false));
 
         cardList.clear();
         cardList.addAll(cards);

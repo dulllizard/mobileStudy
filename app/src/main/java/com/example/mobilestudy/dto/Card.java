@@ -4,23 +4,23 @@ public class Card {
     private int id;
     private String eventName;
     private String eventPlace;
+
+    private boolean isFavorite;
     private byte[] eventPreview;
 
-    public Card(String eventName, String eventPlace) {
-        this.eventName = eventName;
-        this.eventPlace = eventPlace;
-    }
-
-    public Card(String eventName, String eventPlace, byte[] eventPreview) {
-        this.eventName = eventName;
-        this.eventPlace = eventPlace;
-        this.eventPreview = eventPreview;
-    }
-
-    public Card(int id, String eventName, String eventPlace, byte[] eventPreview) {
+    public Card(int id, String eventName, String eventPlace, boolean isFavorite) {
         this.id = id;
         this.eventName = eventName;
         this.eventPlace = eventPlace;
+        this.isFavorite = isFavorite;
+    }
+
+
+    public Card(int id, String eventName, String eventPlace, boolean isFavorite, byte[] eventPreview) {
+        this.id = id;
+        this.eventName = eventName;
+        this.eventPlace = eventPlace;
+        this.isFavorite = isFavorite;
         this.eventPreview = eventPreview;
     }
 
@@ -54,5 +54,13 @@ public class Card {
 
     public void setEventPreview(byte[] eventPreview) {
         this.eventPreview = eventPreview;
+    }
+
+    public boolean getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 }
