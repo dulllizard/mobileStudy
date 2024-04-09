@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import com.example.mobilestudy.adapter.CardAdapter;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
 import com.example.mobilestudy.dto.Card;
+import com.example.mobilestudy.ui.detail.DetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +87,25 @@ public class HomeFragment extends Fragment {
                 Card selectedCard = cardList.get(position);
                 database.updateIsFavoriteById(selectedCard.getId(), !selectedCard.getIsFavorite());
                 updateNoteList();
+            }
+        });
+
+        adapter.setOnButtonShowMoreClickListener(new CardAdapter.OnButtonShowMoreClickListener() {
+            @Override
+            public void onShowMoreClick(int position) {
+                Card selectedCard = cardList.get(position);
+
+                DetailFragment fragment = new DetailFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("eventName", selectedCard.getEventName());
+                fragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.framelayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

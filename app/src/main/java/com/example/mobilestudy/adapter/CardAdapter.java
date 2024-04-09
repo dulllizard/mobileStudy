@@ -20,11 +20,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         public TextView eventName, eventPlace;
         public Button cardGoingButton;
 
+        public Button showMoreButton;
+
         public CardViewHolder(View view) {
             super(view);
             eventName = view.findViewById(R.id.eventName);
             eventPlace = view.findViewById(R.id.eventPlace);
             cardGoingButton = view.findViewById(R.id.cardGoingButton);
+            showMoreButton = view.findViewById(R.id.cardShowMoreButton);
         }
     }
     public CardAdapter(List<Card> cardList) {
@@ -50,6 +53,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.eventName.setText(card.getEventName());
         holder.eventPlace.setText(card.getEventPlace());
         holder.cardGoingButton.setText(card.getIsFavorite() ? "Не пойду" : "Пойду");
+        holder.showMoreButton.setText("Показать");
 
         holder.cardGoingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,28 +66,39 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
                 }
             }
         });
+
+        holder.showMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttonShowMoreClickListener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        buttonShowMoreClickListener.onShowMoreClick(position);
+                    }
+                }
+            }
+        });
     }
 
     public interface OnButtonGoingClickListener {
         void onGoingClick(int position);
     }
 
-//    public interface OnItemClickListener {
-//        void onClick(int position);
-//    }
-
-//    private OnItemClickListener itemListener;
+    public interface OnButtonShowMoreClickListener {
+        void onShowMoreClick(int position);
+    }
     
-
+    private OnButtonShowMoreClickListener buttonShowMoreClickListener;
     private OnButtonGoingClickListener buttonGoingListener;
 
     public void setOnButtonGoingClickListener(OnButtonGoingClickListener listener) {
         buttonGoingListener = listener;
     }
 
-//    public void setOnItemClickListener(OnItemClickListener listener) {
-//        itemListener = listener;
-//    }
+    public void setOnButtonShowMoreClickListener(OnButtonShowMoreClickListener listener) {
+        buttonShowMoreClickListener = listener;
+    }
+
 
     @Override
     public int getItemCount() {

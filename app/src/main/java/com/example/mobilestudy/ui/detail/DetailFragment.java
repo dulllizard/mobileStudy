@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.mobilestudy.R;
 import com.example.mobilestudy.databinding.FragmentDetailBinding;
 
 
@@ -64,6 +67,17 @@ public class DetailFragment extends Fragment {
                 backButtonClickListener.onBackButtonClick();
             }
         });
+
+        Bundle args = getArguments();
+        if (args != null) {
+            String eventName = args.getString("eventName");
+            TextView eventNameView = view.findViewById(R.id.eventName);
+            eventNameView.setText(eventName);
+
+            TextView eventDescription = view.findViewById(R.id.eventDescription);
+            eventDescription.setText("Example");
+
+        }
 
         return view;
     }
