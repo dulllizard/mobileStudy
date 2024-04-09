@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.databinding.FragmentDetailBinding;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -72,12 +74,15 @@ public class DetailFragment extends Fragment {
         if (args != null) {
             String eventName = args.getString("eventName");
             String eventDescription = args.getString("eventDescription");
+            String eventPreview = args.getString("eventPreview");
 
             TextView eventNameView = view.findViewById(R.id.eventName);
             TextView eventDescriptionView = view.findViewById(R.id.eventDescription);
+            ImageView eventPreviewView = view.findViewById(R.id.imagePreview);
 
             eventNameView.setText(eventName);
             eventDescriptionView.setText(eventDescription);
+            Picasso.get().load(eventPreview).into(eventPreviewView);
 
         }
 

@@ -4,12 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.dto.Card;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
         public TextView eventName, eventPlace;
+
+        public ImageView imagePreview;
         public Button cardGoingButton;
 
         public Button showMoreButton;
@@ -28,8 +32,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             eventPlace = view.findViewById(R.id.eventPlace);
             cardGoingButton = view.findViewById(R.id.cardGoingButton);
             showMoreButton = view.findViewById(R.id.cardShowMoreButton);
+            imagePreview = view.findViewById(R.id.imagePreview);
         }
     }
+
     public CardAdapter(List<Card> cardList) {
         this.cardList = cardList;
     }
@@ -54,6 +60,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.eventPlace.setText(card.getEventPlace());
         holder.cardGoingButton.setText(card.getIsFavorite() ? "Не пойду" : "Пойду");
         holder.showMoreButton.setText("Показать");
+        Picasso.get().load(card.getImagePreview()).into(holder.imagePreview);
 
         holder.cardGoingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +94,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
     public interface OnButtonShowMoreClickListener {
         void onShowMoreClick(int position);
     }
-    
+
     private OnButtonShowMoreClickListener buttonShowMoreClickListener;
     private OnButtonGoingClickListener buttonGoingListener;
 

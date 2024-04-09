@@ -14,13 +14,33 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:elevation="12dp"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/cardImageDescription"
+                android:scaleType="centerCrop"
+                android:src="@drawable/example" />
+        </androidx.cardview.widget.CardView>
+
         <TextView
+            android:paddingTop="20dp"
             android:id="@+id/eventName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Event Name"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_below="@id/cardImage"/>
 
         <TextView
             android:id="@+id/eventPlace"

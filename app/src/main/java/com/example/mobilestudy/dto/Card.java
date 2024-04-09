@@ -1,5 +1,7 @@
 package com.example.mobilestudy.dto;
 
+import android.graphics.Bitmap;
+
 public class Card {
     private int id;
     private String eventName;
@@ -7,23 +9,16 @@ public class Card {
     private String description;
 
     private boolean isFavorite;
-    private byte[] eventPreview;
 
-    public Card(int id, String eventName, String eventPlace, String description, boolean isFavorite) {
+    private String imagePreview;
+
+    public Card(int id, String eventName, String eventPlace, String description, String imagePreview, boolean isFavorite) {
         this.id = id;
         this.eventName = eventName;
         this.eventPlace = eventPlace;
         this.description = description;
+        this.imagePreview = imagePreview;
         this.isFavorite = isFavorite;
-    }
-
-
-    public Card(int id, String eventName, String eventPlace, boolean isFavorite, byte[] eventPreview) {
-        this.id = id;
-        this.eventName = eventName;
-        this.eventPlace = eventPlace;
-        this.isFavorite = isFavorite;
-        this.eventPreview = eventPreview;
     }
 
     public int getId() {
@@ -50,13 +45,6 @@ public class Card {
         this.eventPlace = eventPlace;
     }
 
-    public byte[] getEventPreview() {
-        return eventPreview;
-    }
-
-    public void setEventPreview(byte[] eventPreview) {
-        this.eventPreview = eventPreview;
-    }
 
     public boolean getIsFavorite() {
         return isFavorite;
@@ -72,5 +60,13 @@ public class Card {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImagePreview() {
+        return imagePreview;
+    }
+
+    public void setImagePreview(String imagePreview) {
+        this.imagePreview = imagePreview;
     }
 }

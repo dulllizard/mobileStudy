@@ -23,12 +23,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardImage"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:elevation="12dp"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/cardImageDescription"
+                android:scaleType="centerCrop"
+                android:src="@drawable/example" />
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/eventName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="35dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="eventName"
             android:textAlignment="center"
