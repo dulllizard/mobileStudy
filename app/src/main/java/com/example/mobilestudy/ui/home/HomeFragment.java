@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.adapter.CardAdapter;
@@ -81,6 +83,21 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         database = DummyDatabaseCard.getInstance();
+
+
+        SearchView searchView = binding.searchView;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
         adapter.setOnButtonGoingClickListener(new CardAdapter.OnButtonGoingClickListener() {
             @Override
             public void onGoingClick(int position) {
@@ -121,6 +138,19 @@ public class HomeFragment extends Fragment {
         updateNoteList();
 
         return view;
+    }
+
+    private void filterList(String newText) {
+        List<Card> filteredList = new ArrayList<>();
+        for (Card card : cardList) {
+            if (card.getEventName().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(card);
+            }
+        }
+
+        if (!filteredList.isEmpty()) {
+            adapter.setFilteredList(filteredList);
+        }
     }
 
     public void updateNoteList() {

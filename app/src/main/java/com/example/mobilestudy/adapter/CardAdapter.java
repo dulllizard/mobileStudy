@@ -40,6 +40,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         this.cardList = cardList;
     }
 
+    public void setFilteredList(List<Card> filteredList) {
+        this.cardList = filteredList;
+        notifyDataSetChanged();
+    }
+
     public void setCards(List<Card> cardList) {
         this.cardList = cardList;
         notifyDataSetChanged();
