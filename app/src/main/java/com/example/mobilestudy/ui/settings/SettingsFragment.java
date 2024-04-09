@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.mobilestudy.R;
+import com.example.mobilestudy.data.DummyDatabaseCard;
+import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentSettingsBinding;
 
 
@@ -29,6 +32,8 @@ public class SettingsFragment extends Fragment {
      * Слушатель нажатия кнопки "назад"
      */
     private OnBackButtonClickListener backButtonClickListener;
+
+    private DummyDatabaseSettings settingsDatabase;
 
     /**
      * Метод, вызываемый при присоединении фрагмента к его контексту.
@@ -59,12 +64,34 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        String[] cities = getResources().getStringArray(R.array.cities);
-        String[] events = getResources().getStringArray(R.array.events);
+        settingsDatabase = DummyDatabaseSettings.getInstance();
+
+        String[] cities = settingsDatabase.getAvailableCities();
+        String[] events = settingsDatabase.getAvailableEventTypes();
         ArrayAdapter<String> citiesAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, cities);
         ArrayAdapter<String> eventsAdapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, events);
         binding.dropdownCities.setAdapter(citiesAdapter);
         binding.dropdownEvents.setAdapter(eventsAdapter);
+
+        updateSettingsChosenText();
+
+        binding.dropdownCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCity = (String) parent.getItemAtPosition(position);
+                settingsDatabase.setCity(selectedCity);
+                updateSettingsChosenText();
+            }
+        });
+
+        binding.dropdownEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedEventType = (String) parent.getItemAtPosition(position);
+                settingsDatabase.setEventType(selectedEventType);
+                updateSettingsChosenText();
+            }
+        });
 
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +102,11 @@ public class SettingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void updateSettingsChosenText() {
+        String chosenText = settingsDatabase.getCity() + " " + settingsDatabase.getEventType();
+        binding.settingsChosen.setText(chosenText);
     }
 
     /**
