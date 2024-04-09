@@ -10,10 +10,10 @@ public class DummyDatabaseCard {
     private List<Card> cards = new ArrayList<>();
 
     DummyDatabaseCard() {
-        cards.add(new Card(1, "Event 1", "Place 1", false));
-        cards.add(new Card(2, "Event 2", "Place 2", false));
-        cards.add(new Card(3, "Event 3", "Place 3", true));
-        cards.add(new Card(4, "Event 4", "Place 4", true));
+        cards.add(new Card(1, "Event 1", "Place 1", "Description 1", false));
+        cards.add(new Card(2, "Event 2", "Place 2", "Description 2", false));
+        cards.add(new Card(3, "Event 3", "Place 3", "Description 3", true));
+        cards.add(new Card(4, "Event 4", "Place 4", "Description 4", true));
     }
 
     public static DummyDatabaseCard getInstance() {

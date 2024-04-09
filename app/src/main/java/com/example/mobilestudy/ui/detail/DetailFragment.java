@@ -71,11 +71,13 @@ public class DetailFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             String eventName = args.getString("eventName");
-            TextView eventNameView = view.findViewById(R.id.eventName);
-            eventNameView.setText(eventName);
+            String eventDescription = args.getString("eventDescription");
 
-            TextView eventDescription = view.findViewById(R.id.eventDescription);
-            eventDescription.setText("Example");
+            TextView eventNameView = view.findViewById(R.id.eventName);
+            TextView eventDescriptionView = view.findViewById(R.id.eventDescription);
+
+            eventNameView.setText(eventName);
+            eventDescriptionView.setText(eventDescription);
 
         }
 

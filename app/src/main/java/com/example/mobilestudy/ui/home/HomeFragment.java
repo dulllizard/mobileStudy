@@ -99,6 +99,7 @@ public class HomeFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("eventName", selectedCard.getEventName());
+                bundle.putString("eventDescription", selectedCard.getDescription());
                 fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
