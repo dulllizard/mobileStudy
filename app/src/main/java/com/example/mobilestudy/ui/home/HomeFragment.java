@@ -13,11 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.adapter.CardAdapter;
 import com.example.mobilestudy.data.DummyDatabaseCard;
+import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
 import com.example.mobilestudy.dto.Card;
 import com.example.mobilestudy.ui.detail.DetailFragment;
@@ -34,7 +34,9 @@ public class HomeFragment extends Fragment {
     private CardAdapter adapter;
     private List<Card> cardList;
 
-    private DummyDatabaseCard database;
+    private DummyDatabaseCard cardDatabase;
+
+    private DummyDatabaseSettings settingsDatabase;
 
     /**
      * Поле для привязки макета фрагмента
@@ -74,6 +76,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
+        cardDatabase = DummyDatabaseCard.getInstance();
+        settingsDatabase = DummyDatabaseSettings.getInstance();
+
+        String homeTitle = getHomeTitle();
+        binding.homeTitle.setText(homeTitle);
         cardList = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.fragment_home);
@@ -81,8 +89,6 @@ public class HomeFragment extends Fragment {
 
         adapter = new CardAdapter(cardList);
         recyclerView.setAdapter(adapter);
-
-        database = DummyDatabaseCard.getInstance();
 
 
         SearchView searchView = binding.searchView;
@@ -102,7 +108,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onGoingClick(int position) {
                 Card selectedCard = cardList.get(position);
-                database.updateIsFavoriteById(selectedCard.getId(), !selectedCard.getIsFavorite());
+                cardDatabase.updateIsFavoriteById(selectedCard.getId(), !selectedCard.getIsFavorite());
                 updateNoteList();
             }
         });
@@ -140,6 +146,10 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private String getHomeTitle() {
+        return settingsDatabase.getCity() + "\n" + settingsDatabase.getEventType();
+    }
+
     private void filterList(String newText) {
         List<Card> filteredList = new ArrayList<>();
         for (Card card : cardList) {
@@ -154,8 +164,9 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateNoteList() {
-
-        List<Card> cards = database.getAllCards();
+        String city = settingsDatabase.getCity();
+        String eventType = settingsDatabase.getEventType();
+        List<Card> cards = cardDatabase.getCardsByCityAndEventType(city, eventType);
 
         cardList.clear();
         cardList.addAll(cards);
