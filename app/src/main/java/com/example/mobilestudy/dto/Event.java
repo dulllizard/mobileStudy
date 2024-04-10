@@ -1,8 +1,6 @@
 package com.example.mobilestudy.dto;
 
-import android.graphics.Bitmap;
-
-public class Card {
+public class Event {
     private int id;
     private String eventName;
     private String eventPlace;
@@ -16,8 +14,8 @@ public class Card {
 
     private String imagePreview;
 
-    public Card(int id, String eventName, String eventPlace, String description,
-                String imagePreview, String city, String eventType, boolean isFavorite) {
+    public Event(int id, String eventName, String eventPlace, String description,
+                 String imagePreview, String city, String eventType, boolean isFavorite) {
         this.id = id;
         this.eventName = eventName;
         this.eventPlace = eventPlace;

@@ -10,15 +10,15 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobilestudy.R;
-import com.example.mobilestudy.dto.Card;
+import com.example.mobilestudy.dto.Event;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
-    private List<Card> cardList;
+public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+    private List<Event> eventList;
 
-    public class CardViewHolder extends RecyclerView.ViewHolder {
+    public class EventViewHolder extends RecyclerView.ViewHolder {
         public TextView eventName, eventPlace;
 
         public ImageView imagePreview;
@@ -26,7 +26,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
         public Button showMoreButton;
 
-        public CardViewHolder(View view) {
+        public EventViewHolder(View view) {
             super(view);
             eventName = view.findViewById(R.id.eventName);
             eventPlace = view.findViewById(R.id.eventPlace);
@@ -36,36 +36,36 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         }
     }
 
-    public CardAdapter(List<Card> cardList) {
-        this.cardList = cardList;
+    public EventAdapter(List<Event> eventList) {
+        this.eventList = eventList;
     }
 
-    public void setFilteredList(List<Card> filteredList) {
-        this.cardList = filteredList;
+    public void setFilteredList(List<Event> filteredList) {
+        this.eventList = filteredList;
         notifyDataSetChanged();
     }
 
-    public void setCards(List<Card> cardList) {
-        this.cardList = cardList;
+    public void setCards(List<Event> eventList) {
+        this.eventList = eventList;
         notifyDataSetChanged();
     }
 
     @Override
-    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_item, parent, false);
 
-        return new CardViewHolder(itemView);
+        return new EventViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(CardViewHolder holder, int position) {
-        Card card = cardList.get(position);
-        holder.eventName.setText(card.getEventName());
-        holder.eventPlace.setText(card.getEventPlace());
-        holder.cardGoingButton.setText(card.getIsFavorite() ? "Не пойду" : "Пойду");
+    public void onBindViewHolder(EventViewHolder holder, int position) {
+        Event event = eventList.get(position);
+        holder.eventName.setText(event.getEventName());
+        holder.eventPlace.setText(event.getEventPlace());
+        holder.cardGoingButton.setText(event.getIsFavorite() ? "Не пойду" : "Пойду");
         holder.showMoreButton.setText("Показать");
-        Picasso.get().load(card.getImagePreview()).into(holder.imagePreview);
+        Picasso.get().load(event.getImagePreview()).into(holder.imagePreview);
 
         holder.cardGoingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +114,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
     @Override
     public int getItemCount() {
-        return cardList.size();
+        return eventList.size();
     }
 
     public void removeItem(int position) {
-        cardList.remove(position);
+        eventList.remove(position);
         notifyItemRemoved(position);
     }
 }

@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.example.mobilestudy.R;
-import com.example.mobilestudy.adapter.CardAdapter;
+import com.example.mobilestudy.adapter.EventAdapter;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.FragmentFavoritesBinding;
-import com.example.mobilestudy.dto.Card;
+import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ import java.util.List;
 public class FavoritesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private CardAdapter adapter;
-    private List<Card> cardList;
+    private EventAdapter adapter;
+    private List<Event> eventList;
 
     private DummyDatabaseCard database;
 
@@ -75,12 +75,12 @@ public class FavoritesFragment extends Fragment {
         binding = FragmentFavoritesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        cardList = new ArrayList<>();
+        eventList = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.fragment_favorites);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new CardAdapter(cardList);
+        adapter = new EventAdapter(eventList);
         recyclerView.setAdapter(adapter);
 
         database = DummyDatabaseCard.getInstance();
@@ -101,26 +101,26 @@ public class FavoritesFragment extends Fragment {
             }
         });
 
-        adapter.setOnButtonGoingClickListener(new CardAdapter.OnButtonGoingClickListener() {
+        adapter.setOnButtonGoingClickListener(new EventAdapter.OnButtonGoingClickListener() {
             @Override
             public void onGoingClick(int position) {
-                Card selectedCard = cardList.get(position);
-                database.updateIsFavoriteById(selectedCard.getId(), !selectedCard.getIsFavorite());
+                Event selectedEvent = eventList.get(position);
+                database.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
                 updateNoteList();
             }
         });
 
-        adapter.setOnButtonShowMoreClickListener(new CardAdapter.OnButtonShowMoreClickListener() {
+        adapter.setOnButtonShowMoreClickListener(new EventAdapter.OnButtonShowMoreClickListener() {
             @Override
             public void onShowMoreClick(int position) {
-                Card selectedCard = cardList.get(position);
+                Event selectedEvent = eventList.get(position);
 
                 DetailFragment fragment = new DetailFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("eventName", selectedCard.getEventName());
-                bundle.putString("eventDescription", selectedCard.getDescription());
-                bundle.putString("eventPreview", selectedCard.getImagePreview());
+                bundle.putString("eventName", selectedEvent.getEventName());
+                bundle.putString("eventDescription", selectedEvent.getDescription());
+                bundle.putString("eventPreview", selectedEvent.getImagePreview());
                 fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -144,10 +144,10 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void filterList(String newText) {
-        List<Card> filteredList = new ArrayList<>();
-        for (Card card : cardList) {
-            if (card.getEventName().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(card);
+        List<Event> filteredList = new ArrayList<>();
+        for (Event event : eventList) {
+            if (event.getEventName().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(event);
             }
         }
 
@@ -157,10 +157,10 @@ public class FavoritesFragment extends Fragment {
     }
 
     public void updateNoteList() {
-        List<Card> cards = database.getFavoriteCards();
+        List<Event> events = database.getFavoriteCards();
 
-        cardList.clear();
-        cardList.addAll(cards);
+        eventList.clear();
+        eventList.addAll(events);
         adapter.notifyDataSetChanged();
     }
 

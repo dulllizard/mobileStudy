@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.example.mobilestudy.R;
-import com.example.mobilestudy.adapter.CardAdapter;
+import com.example.mobilestudy.adapter.EventAdapter;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
-import com.example.mobilestudy.dto.Card;
+import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private CardAdapter adapter;
-    private List<Card> cardList;
+    private EventAdapter adapter;
+    private List<Event> eventList;
 
     private DummyDatabaseCard cardDatabase;
 
@@ -82,12 +82,12 @@ public class HomeFragment extends Fragment {
 
         String homeTitle = getHomeTitle();
         binding.homeTitle.setText(homeTitle);
-        cardList = new ArrayList<>();
+        eventList = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.fragment_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new CardAdapter(cardList);
+        adapter = new EventAdapter(eventList);
         recyclerView.setAdapter(adapter);
 
 
@@ -104,26 +104,26 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-        adapter.setOnButtonGoingClickListener(new CardAdapter.OnButtonGoingClickListener() {
+        adapter.setOnButtonGoingClickListener(new EventAdapter.OnButtonGoingClickListener() {
             @Override
             public void onGoingClick(int position) {
-                Card selectedCard = cardList.get(position);
-                cardDatabase.updateIsFavoriteById(selectedCard.getId(), !selectedCard.getIsFavorite());
+                Event selectedEvent = eventList.get(position);
+                cardDatabase.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
                 updateNoteList();
             }
         });
 
-        adapter.setOnButtonShowMoreClickListener(new CardAdapter.OnButtonShowMoreClickListener() {
+        adapter.setOnButtonShowMoreClickListener(new EventAdapter.OnButtonShowMoreClickListener() {
             @Override
             public void onShowMoreClick(int position) {
-                Card selectedCard = cardList.get(position);
+                Event selectedEvent = eventList.get(position);
 
                 DetailFragment fragment = new DetailFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("eventName", selectedCard.getEventName());
-                bundle.putString("eventDescription", selectedCard.getDescription());
-                bundle.putString("eventPreview", selectedCard.getImagePreview());
+                bundle.putString("eventName", selectedEvent.getEventName());
+                bundle.putString("eventDescription", selectedEvent.getDescription());
+                bundle.putString("eventPreview", selectedEvent.getImagePreview());
                 fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -151,10 +151,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void filterList(String newText) {
-        List<Card> filteredList = new ArrayList<>();
-        for (Card card : cardList) {
-            if (card.getEventName().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(card);
+        List<Event> filteredList = new ArrayList<>();
+        for (Event event : eventList) {
+            if (event.getEventName().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(event);
             }
         }
 
@@ -166,10 +166,10 @@ public class HomeFragment extends Fragment {
     public void updateNoteList() {
         String city = settingsDatabase.getCity();
         String eventType = settingsDatabase.getEventType();
-        List<Card> cards = cardDatabase.getCardsByCityAndEventType(city, eventType);
+        List<Event> events = cardDatabase.getCardsByCityAndEventType(city, eventType);
 
-        cardList.clear();
-        cardList.addAll(cards);
+        eventList.clear();
+        eventList.addAll(events);
         adapter.notifyDataSetChanged();
     }
 
