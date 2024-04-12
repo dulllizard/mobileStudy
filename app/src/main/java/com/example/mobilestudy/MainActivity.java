@@ -11,7 +11,6 @@ import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.ActivityMainBinding;
 import com.example.mobilestudy.dto.Event;
-import com.example.mobilestudy.ui.FragmentFactory;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 import com.example.mobilestudy.ui.favorites.FavoritesFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
@@ -40,8 +39,6 @@ public class MainActivity extends AppCompatActivity
      */
     private MeowBottomNavigation bottomNavigation;
 
-    private FragmentFactory fragmentFactory;
-
     private DatabaseHelper dbHelper;
 
     private DummyDatabaseCard dummyDatabaseCard;
@@ -65,10 +62,9 @@ public class MainActivity extends AppCompatActivity
             dbHelper.addEvent(event);
         }
 
-        fragmentFactory = new FragmentFactory();
         bottomNavigation = binding.bottomNavigation;
 
-        replace(fragmentFactory.getHomeFragment());
+        replace(new HomeFragment());
         bottomNavigation.show(2, true);
 
         bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.baseline_favorite_24));
@@ -81,15 +77,16 @@ public class MainActivity extends AppCompatActivity
 
                 switch (model.getId()) {
                     case 1:
-                        replace(fragmentFactory.getFavoritesFragment());
+                        replace(new FavoritesFragment());
+
                         break;
 
                     case 2:
-                        replace(fragmentFactory.getHomeFragment());
+                        replace(new HomeFragment());
                         break;
 
                     case 3:
-                        replace(fragmentFactory.getMapFragment());
+                        replace(new MapFragment());
                         break;
                 }
                 return null;
@@ -102,7 +99,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onBackButtonClick() {
-        replace(fragmentFactory.getHomeFragment());
+        replace(new HomeFragment());
         bottomNavigation.show(2, true);
     }
 
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onSettingsButtonClick() {
-        replace(fragmentFactory.getSettingsFragment());
+        replace(new SettingsFragment());
     }
 
     /**

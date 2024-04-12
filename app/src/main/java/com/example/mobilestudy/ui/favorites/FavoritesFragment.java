@@ -35,8 +35,8 @@ public class FavoritesFragment extends Fragment {
     private EventAdapter adapter;
     private List<Event> eventList;
 
-    private DummyDatabaseCard database;
-//    private DatabaseHelper dbHelper = new DatabaseHelper(getContext());;
+//    private DummyDatabaseCard database;
+    private DatabaseHelper dbHelper = new DatabaseHelper(getContext());;
 
     /**
      * Поле для привязки макета фрагмента
@@ -85,8 +85,8 @@ public class FavoritesFragment extends Fragment {
         adapter = new EventAdapter(eventList);
         recyclerView.setAdapter(adapter);
 
-        database = DummyDatabaseCard.getInstance();
-//        dbHelper = new DatabaseHelper(getContext());
+//        database = DummyDatabaseCard.getInstance();
+        dbHelper = new DatabaseHelper(getContext());
 
 
 
@@ -108,8 +108,8 @@ public class FavoritesFragment extends Fragment {
             @Override
             public void onGoingClick(int position) {
                 Event selectedEvent = eventList.get(position);
-//                dbHelper.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
-                database.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
+                dbHelper.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
+//                database.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
                 updateNoteList();
             }
         });
@@ -161,8 +161,8 @@ public class FavoritesFragment extends Fragment {
     }
 
     public void updateNoteList() {
-        List<Event> events = database.getFavoriteCards();
-//        List<Event> events = dbHelper.getFavoriteEvents();
+//        List<Event> events = database.getFavoriteCards();
+        List<Event> events = dbHelper.getFavoriteEvents();
 
         eventList.clear();
         eventList.addAll(events);
