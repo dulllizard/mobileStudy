@@ -16,6 +16,7 @@ import android.widget.SearchView;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.adapter.EventAdapter;
+import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
@@ -33,6 +34,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> eventList;
+
+//    private DatabaseHelper dbHelper = new DatabaseHelper(getContext());
 
     private DummyDatabaseCard cardDatabase;
 
@@ -77,8 +80,9 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        cardDatabase = DummyDatabaseCard.getInstance();
+//        dbHelper = new DatabaseHelper(getContext());
         settingsDatabase = DummyDatabaseSettings.getInstance();
+        cardDatabase = DummyDatabaseCard.getInstance();
 
         String homeTitle = getHomeTitle();
         binding.homeTitle.setText(homeTitle);
@@ -108,6 +112,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onGoingClick(int position) {
                 Event selectedEvent = eventList.get(position);
+//                dbHelper.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
                 cardDatabase.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
                 updateNoteList();
             }
@@ -167,7 +172,8 @@ public class HomeFragment extends Fragment {
         String city = settingsDatabase.getCity();
         String eventType = settingsDatabase.getEventType();
         List<Event> events = cardDatabase.getCardsByCityAndEventType(city, eventType);
-
+//        List<Event> events = dbHelper.getEventsByCityAndEventType(city, eventType);
+//        List<Event> events = dbHelper.getAllEvents();
         eventList.clear();
         eventList.addAll(events);
         adapter.notifyDataSetChanged();

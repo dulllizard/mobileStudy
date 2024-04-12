@@ -7,13 +7,18 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.example.mobilestudy.data.DatabaseHelper;
+import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.ActivityMainBinding;
+import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.FragmentFactory;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 import com.example.mobilestudy.ui.favorites.FavoritesFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
 import com.example.mobilestudy.ui.map.MapFragment;
 import com.example.mobilestudy.ui.settings.SettingsFragment;
+
+import java.util.List;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -37,6 +42,10 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentFactory fragmentFactory;
 
+    private DatabaseHelper dbHelper;
+
+    private DummyDatabaseCard dummyDatabaseCard;
+
     /**
      * Метод, вызываемый при создании активности.
      *
@@ -47,6 +56,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        dbHelper = new DatabaseHelper(getApplicationContext());
+        dbHelper.deleteAllEvents();
+        dummyDatabaseCard = DummyDatabaseCard.getInstance();
+        List<Event> allEvents = dummyDatabaseCard.getAllCards();
+        for (Event event : allEvents) {
+            dbHelper.addEvent(event);
+        }
 
         fragmentFactory = new FragmentFactory();
         bottomNavigation = binding.bottomNavigation;
@@ -105,6 +122,7 @@ public class MainActivity extends AppCompatActivity
     private void replace(Fragment fragment) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setReorderingAllowed(true);
         transaction.replace(binding.framelayout.getId(), fragment);
         transaction.commit();
     }

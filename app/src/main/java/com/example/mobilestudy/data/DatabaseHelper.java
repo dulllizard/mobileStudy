@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "mobile_study.db";
+    private static final String DATABASE_NAME = "mobile_study";
 
     private static final String EVENT_TABLE_NAME = "events";
     private static final int DATABASE_VERSION = 1;
@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EVENT_COLUMN_EVENT_DESCRIPTION + " TEXT, " +
                 EVENT_COLUMN_EVENT_CITY + " TEXT, " +
                 EVENT_COLUMN_EVENT_IS_FAVORITE + " INTEGER, " +
-                EVENT_COLUMN_EVENT_TYPE + "TEXT, " +
+                EVENT_COLUMN_EVENT_TYPE + " TEXT, " +
                 EVENT_COLUMN_EVENT_IMAGE_PREVIEW + " TEXT);");
     }
 
@@ -67,8 +67,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     int descriptionIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_DESCRIPTION);
                     int cityIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CITY);
                     int isFavoriteIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IS_FAVORITE);
-                    int imagePreviewIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IMAGE_PREVIEW);
                     int eventTypeIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_TYPE);
+                    int imagePreviewIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IMAGE_PREVIEW);
+
 
                     int id = cursor.getInt(idIndex);
                     String name = cursor.getString(nameIndex);
@@ -97,7 +98,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String selection = EVENT_COLUMN_EVENT_CITY + " = ? AND " + EVENT_COLUMN_EVENT_TYPE + " = ?";
         String[] selectionArgs = {city, eventType};
-
         Cursor cursor = db.query(EVENT_TABLE_NAME, null, selection, selectionArgs, null, null, null);
         try {
             if (cursor != null && cursor.moveToFirst()) {
@@ -172,6 +172,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    public boolean deleteAllEvents() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete(EVENT_TABLE_NAME, null, null);
+        return rowsAffected > 0;
+    }
+
     public boolean addEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -179,10 +185,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(EVENT_COLUMN_EVENT_CITY, event.getCity());
         values.put(EVENT_COLUMN_EVENT_DESCRIPTION, event.getDescription());
         values.put(EVENT_COLUMN_EVENT_NAME, event.getEventName());
-        values.put(EVENT_COLUMN_EVENT_IS_FAVORITE, event.getIsFavorite());
+        values.put(EVENT_COLUMN_EVENT_IS_FAVORITE, event.getIsFavorite() ? 1 : 0);
         values.put(EVENT_COLUMN_EVENT_IMAGE_PREVIEW, event.getImagePreview());
         values.put(EVENT_COLUMN_EVENT_PLACE, event.getEventPlace());
-        values.put(EVENT_COLUMN_EVENT_PLACE, event.getEventPlace());
+        values.put(EVENT_COLUMN_EVENT_TYPE, event.getEventType());
 
         long newRowId = db.insert(EVENT_TABLE_NAME, null, values);
         return newRowId != -1;
@@ -214,7 +220,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update(EVENT_TABLE_NAME, values, selection, selectionArgs);
     }
-
-
-
 }
