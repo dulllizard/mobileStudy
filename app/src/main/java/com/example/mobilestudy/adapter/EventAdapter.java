@@ -111,14 +111,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         buttonShowMoreClickListener = listener;
     }
 
-
     @Override
     public int getItemCount() {
         return eventList.size();
     }
 
-    public void removeItem(int position) {
-        eventList.remove(position);
-        notifyItemRemoved(position);
-    }
 }

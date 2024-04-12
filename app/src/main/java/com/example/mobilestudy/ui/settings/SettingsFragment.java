@@ -76,14 +76,12 @@ public class SettingsFragment extends Fragment {
         binding.dropdownCities.setAdapter(citiesAdapter);
         binding.dropdownEvents.setAdapter(eventsAdapter);
 
-        updateSettingsChosenText();
 
         binding.dropdownCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCity = (String) parent.getItemAtPosition(position);
                 settingsDatabase.setCity(selectedCity);
-                updateSettingsChosenText();
             }
         });
 
@@ -92,7 +90,6 @@ public class SettingsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEventType = (String) parent.getItemAtPosition(position);
                 settingsDatabase.setEventType(selectedEventType);
-                updateSettingsChosenText();
             }
         });
 
@@ -107,10 +104,6 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    private void updateSettingsChosenText() {
-        String chosenText = settingsDatabase.getCity() + " " + settingsDatabase.getEventType();
-        binding.settingsChosen.setText(chosenText);
-    }
 
     /**
      * Интерфейс для обработки нажатия кнопки "назад".

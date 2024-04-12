@@ -17,7 +17,6 @@ import android.widget.SearchView;
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.adapter.EventAdapter;
 import com.example.mobilestudy.data.DatabaseHelper;
-import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.FragmentFavoritesBinding;
 import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.detail.DetailFragment;
@@ -35,7 +34,6 @@ public class FavoritesFragment extends Fragment {
     private EventAdapter adapter;
     private List<Event> eventList;
 
-//    private DummyDatabaseCard database;
     private DatabaseHelper dbHelper = new DatabaseHelper(getContext());;
 
     /**
@@ -85,7 +83,6 @@ public class FavoritesFragment extends Fragment {
         adapter = new EventAdapter(eventList);
         recyclerView.setAdapter(adapter);
 
-//        database = DummyDatabaseCard.getInstance();
         dbHelper = new DatabaseHelper(getContext());
 
 
@@ -161,7 +158,6 @@ public class FavoritesFragment extends Fragment {
     }
 
     public void updateNoteList() {
-//        List<Event> events = database.getFavoriteCards();
         List<Event> events = dbHelper.getFavoriteEvents();
 
         eventList.clear();
