@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+
 import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.ActivityMainBinding;
@@ -39,8 +40,14 @@ public class MainActivity extends AppCompatActivity
      */
     private MeowBottomNavigation bottomNavigation;
 
+    /**
+     * База данных
+     */
     private DatabaseHelper dbHelper;
 
+    /**
+     * Хранение записей во внутренней памяти
+     */
     private DummyDatabaseCard dummyDatabaseCard;
 
     /**

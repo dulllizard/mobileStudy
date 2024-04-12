@@ -33,6 +33,9 @@ public class SettingsFragment extends Fragment {
      */
     private OnBackButtonClickListener backButtonClickListener;
 
+    /**
+     * Настройки, храниящиеся во внутренней памяти
+     */
     private DummyDatabaseSettings settingsDatabase;
 
     /**

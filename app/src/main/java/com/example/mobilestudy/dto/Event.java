@@ -1,19 +1,61 @@
 package com.example.mobilestudy.dto;
 
+/**
+ * События
+ */
 public class Event {
+
+    /**
+     * id события
+     */
     private int id;
+
+    /**
+     * Название события
+     */
     private String eventName;
+
+    /**
+     * Место проведения события
+     */
     private String eventPlace;
+
+    /**
+     * Описание события
+     */
     private String description;
 
+    /**
+     * Город, в котором проводится событие
+     */
     private String city;
 
+    /**
+     * Тип события
+     */
     private String eventType;
 
+    /**
+     * Добавлено ли событие в избранное
+     */
     private boolean isFavorite;
 
+    /**
+     * Превью события
+     */
     private String imagePreview;
 
+    /**
+     * Конструктор события
+     * @param id id события
+     * @param eventName Название события
+     * @param eventPlace Место проведения события
+     * @param description Описание события
+     * @param imagePreview Превью события
+     * @param city Город, в котором проводится событие
+     * @param eventType Тип события
+     * @param isFavorite Добавлено ли событие в избранное
+     */
     public Event(int id, String eventName, String eventPlace, String description,
                  String imagePreview, String city, String eventType, boolean isFavorite) {
         this.id = id;

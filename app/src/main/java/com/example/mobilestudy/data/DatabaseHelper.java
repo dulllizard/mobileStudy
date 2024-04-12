@@ -53,6 +53,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Получение всех событий
+     * @return Все события
+     */
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -92,6 +96,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Получение событий по городу и типу события
+     * @param city  Город
+     * @param eventType Тип события
+     * @return События
+     */
     public List<Event> getEventsByCityAndEventType(String city, String eventType) {
         List<Event> filteredList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -127,6 +137,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return filteredList;
     }
 
+    /**
+     * Получение избранных событий
+     * @return Избранные события
+     */
     public List<Event> getFavoriteEvents() {
         List<Event> filteredList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -166,18 +180,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return filteredList;
     }
 
+    /**
+     * Удаление события по id
+     * @param id id события
+     * @return Были удалены события или нет
+     */
     public boolean deleteEventById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(EVENT_TABLE_NAME, EVENT_COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
         return rowsAffected > 0;
     }
 
+    /**
+     * Удаление всех событий
+     * @return Были удалены события или нет
+     */
     public boolean deleteAllEvents() {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(EVENT_TABLE_NAME, null, null);
         return rowsAffected > 0;
     }
 
+    /**
+     * Добавление события
+     * @param event Событие
+     * @return Было добавлено событие или нет
+     */
     public boolean addEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -194,6 +222,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return newRowId != -1;
     }
 
+    /**
+     * Обновление события по id
+     * @param id id События
+     * @param newEvent Новое событие
+     * @return Было обновлено событие или нет
+     */
     public boolean updateEventById(int id, Event newEvent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -210,6 +244,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+
+    /**
+     * Обновление избранного события по id
+     * @param id id События
+     * @param isFavorite Флаг избранного
+     */
     public void updateIsFavoriteById(int id, boolean isFavorite) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

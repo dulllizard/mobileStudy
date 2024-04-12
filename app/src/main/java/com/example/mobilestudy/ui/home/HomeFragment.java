@@ -17,7 +17,6 @@ import android.widget.SearchView;
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.adapter.EventAdapter;
 import com.example.mobilestudy.data.DatabaseHelper;
-import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
 import com.example.mobilestudy.dto.Event;
@@ -32,12 +31,21 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
+
+    /**
+     * Адаптер записей
+     */
     private EventAdapter adapter;
+
+    /**
+     * Список записей
+     */
     private List<Event> eventList;
 
-    private DatabaseHelper dbHelper = new DatabaseHelper(getContext());
-
-//    private DummyDatabaseCard cardDatabase;
+    /**
+     * База данных
+     */
+    private DatabaseHelper dbHelper;
 
     private DummyDatabaseSettings settingsDatabase;
 
@@ -82,7 +90,6 @@ public class HomeFragment extends Fragment {
 
         dbHelper = new DatabaseHelper(getContext());
         settingsDatabase = DummyDatabaseSettings.getInstance();
-//        cardDatabase = DummyDatabaseCard.getInstance();
 
         String homeTitle = getHomeTitle();
         binding.homeTitle.setText(homeTitle);
@@ -113,8 +120,7 @@ public class HomeFragment extends Fragment {
             public void onGoingClick(int position) {
                 Event selectedEvent = eventList.get(position);
                 dbHelper.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
-//                cardDatabase.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
-                updateNoteList();
+                updateEventList();
             }
         });
 
@@ -146,15 +152,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        updateNoteList();
+        updateEventList();
 
         return view;
     }
 
+    /**
+     * Получение заголовка домашней страницы
+     */
     private String getHomeTitle() {
         return settingsDatabase.getCity() + "\n" + settingsDatabase.getEventType();
     }
 
+    /**
+     * Фильтрация списка записей по текстовому запросу
+     */
     private void filterList(String newText) {
         List<Event> filteredList = new ArrayList<>();
         for (Event event : eventList) {
@@ -167,13 +179,13 @@ public class HomeFragment extends Fragment {
             adapter.setFilteredList(filteredList);
         }
     }
-
-    public void updateNoteList() {
+    /**
+     * Обновление списка записей
+     */
+    public void updateEventList() {
         String city = settingsDatabase.getCity();
         String eventType = settingsDatabase.getEventType();
-//        List<Event> events = cardDatabase.getCardsByCityAndEventType(city, eventType);
         List<Event> events = dbHelper.getEventsByCityAndEventType(city, eventType);
-//        List<Event> events = dbHelper.getAllEvents();
         eventList.clear();
         eventList.addAll(events);
         adapter.notifyDataSetChanged();
