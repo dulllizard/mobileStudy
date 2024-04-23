@@ -267,7 +267,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-//        values.put(EVENT_COLUMN_ID, event.getId());
         values.put(EVENT_COLUMN_EVENT_CITY, event.getCity());
         values.put(EVENT_COLUMN_EVENT_DESCRIPTION, event.getDescription());
         values.put(EVENT_COLUMN_EVENT_NAME, event.getEventName());
@@ -290,7 +289,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateEventById(int id, Event newEvent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-//        values.put(EVENT_COLUMN_ID, newEvent.getId());
         values.put(EVENT_COLUMN_EVENT_CITY, newEvent.getCity());
         values.put(EVENT_COLUMN_EVENT_DESCRIPTION, newEvent.getDescription());
         values.put(EVENT_COLUMN_EVENT_NAME, newEvent.getEventName());

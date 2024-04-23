@@ -10,17 +10,12 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.data.DatabaseHelper;
-import com.example.mobilestudy.databinding.FragmentCreateBinding;
 import com.example.mobilestudy.databinding.FragmentEditBinding;
 import com.example.mobilestudy.dto.Event;
-import com.example.mobilestudy.ui.create.CreateFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
-import com.squareup.picasso.Picasso;
 
 
 public class EditFragment extends Fragment {

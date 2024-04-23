@@ -89,16 +89,6 @@ public class Event {
         this.isFavorite = isFavorite;
         this.createdByUser = createdByUser;
     }
-
-    public Event(String eventName, String eventPlace, String description,
-                 String city, String eventType) {
-        this.eventName = eventName;
-        this.eventPlace = eventPlace;
-        this.description = description;
-        this.city = city;
-        this.eventType = eventType;
-    }
-
     public int getId() {
         return id;
     }

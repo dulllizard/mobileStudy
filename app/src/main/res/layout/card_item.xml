@@ -54,9 +54,10 @@
         <Button
             android:id="@+id/cardGoingButton"
             android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_height="48dp"
+            android:layout_below="@+id/eventPlace"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:backgroundTint="@color/colorPassive"
             android:text="Going"
             android:textColor="@color/white"
@@ -74,11 +75,10 @@
             android:textSize="11sp" />
 
         <Button
-            android:layout_marginTop="20dp"
             android:id="@+id/cardShowMoreButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_below="@+id/eventPlace"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:backgroundTint="@color/colorPassive"
             android:text="More"
