@@ -27,6 +27,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         public Button showMoreButton;
         public Button deleteButton;
 
+        public Button editButton;
+
         public EventViewHolder(View view) {
             super(view);
             eventName = view.findViewById(R.id.eventName);
@@ -35,6 +37,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             showMoreButton = view.findViewById(R.id.cardShowMoreButton);
             imagePreview = view.findViewById(R.id.imagePreview);
             deleteButton = view.findViewById(R.id.deleteButton);
+            editButton = view.findViewById(R.id.editButton);
         }
     }
 
@@ -68,6 +71,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.cardGoingButton.setText(event.getIsFavorite() ? "Не пойду" : "Пойду");
         holder.showMoreButton.setText("Показать");
         Picasso.get().load(event.getImagePreview()).into(holder.imagePreview);
+        holder.editButton.setVisibility(event.isCreatedByUser() ? View.VISIBLE : View.GONE);
 
         holder.cardGoingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +108,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 }
             }
         });
+
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttonEditListener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        buttonEditListener.onEditClick(position);
+                    }
+                }
+            }
+        });
     }
 
     public interface OnButtonGoingClickListener {
@@ -118,10 +134,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         void onDeleteClick(int position);
     }
 
+    public interface onButtonEditListener {
+        void onEditClick(int position);
+    }
+
+    private onButtonEditListener buttonEditListener;
+
     private onButtonDeleteListener buttonDeleteListener;
 
     private OnButtonShowMoreClickListener buttonShowMoreClickListener;
     private OnButtonGoingClickListener buttonGoingListener;
+
+
 
     public void setOnButtonGoingClickListener(OnButtonGoingClickListener listener) {
         buttonGoingListener = listener;
@@ -133,6 +157,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     public void setOnButtonDeleteClickListener(onButtonDeleteListener listener) {
         buttonDeleteListener = listener;
+    }
+
+    public void setOnButtonEditClickListener(onButtonEditListener listener) {
+        buttonEditListener = listener;
     }
 
     @Override

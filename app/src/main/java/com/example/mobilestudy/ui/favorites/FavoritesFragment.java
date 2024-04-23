@@ -20,6 +20,7 @@ import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.databinding.FragmentFavoritesBinding;
 import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.detail.DetailFragment;
+import com.example.mobilestudy.ui.edit.EditFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +109,25 @@ public class FavoritesFragment extends Fragment {
                 dbHelper.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
 //                database.updateIsFavoriteById(selectedEvent.getId(), !selectedEvent.getIsFavorite());
                 updateNoteList();
+            }
+        });
+
+        adapter.setOnButtonEditClickListener(new EventAdapter.onButtonEditListener() {
+            @Override
+            public void onEditClick(int position) {
+                Event selectedEvent = eventList.get(position);
+
+                EditFragment fragment = new EditFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("eventId", selectedEvent.getId());
+                fragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.framelayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

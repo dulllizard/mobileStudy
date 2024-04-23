@@ -21,6 +21,7 @@ import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentHomeBinding;
 import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.detail.DetailFragment;
+import com.example.mobilestudy.ui.edit.EditFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +136,25 @@ public class HomeFragment extends Fragment {
                 bundle.putString("eventName", selectedEvent.getEventName());
                 bundle.putString("eventDescription", selectedEvent.getDescription());
                 bundle.putString("eventPreview", selectedEvent.getImagePreview());
+                fragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.framelayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        adapter.setOnButtonEditClickListener(new EventAdapter.onButtonEditListener() {
+            @Override
+            public void onEditClick(int position) {
+                Event selectedEvent = eventList.get(position);
+
+                EditFragment fragment = new EditFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("eventId", selectedEvent.getId());
                 fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

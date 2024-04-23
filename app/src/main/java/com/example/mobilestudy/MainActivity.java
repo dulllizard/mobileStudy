@@ -14,6 +14,7 @@ import com.example.mobilestudy.databinding.ActivityMainBinding;
 import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.create.CreateFragment;
 import com.example.mobilestudy.ui.detail.DetailFragment;
+import com.example.mobilestudy.ui.edit.EditFragment;
 import com.example.mobilestudy.ui.favorites.FavoritesFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
 import com.example.mobilestudy.ui.map.MapFragment;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity
         DetailFragment.OnBackButtonClickListener,
         FavoritesFragment.OnSettingsButtonClickListener,
         MapFragment.OnSettingsButtonClickListener,
-        CreateFragment.OnBackButtonClickListener{
+        CreateFragment.OnBackButtonClickListener,
+        EditFragment.OnBackButtonClickListener {
 
     /**
      * Привязка к макету активности
@@ -64,13 +66,13 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        dbHelper = new DatabaseHelper(getApplicationContext());
-        dbHelper.deleteAllEvents();
-        dummyDatabaseCard = DummyDatabaseCard.getInstance();
-        List<Event> allEvents = dummyDatabaseCard.getAllCards();
-        for (Event event : allEvents) {
-            dbHelper.addEvent(event);
-        }
+//        dbHelper = new DatabaseHelper(getApplicationContext());
+//        dbHelper.deleteAllEvents();
+//        dummyDatabaseCard = DummyDatabaseCard.getInstance();
+//        List<Event> allEvents = dummyDatabaseCard.getAllCards();
+//        for (Event event : allEvents) {
+//            dbHelper.addEvent(event);
+//        }
 
         bottomNavigation = binding.bottomNavigation;
 

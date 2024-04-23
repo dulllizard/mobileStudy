@@ -45,6 +45,8 @@ public class Event {
      */
     private String imagePreview;
 
+    private boolean createdByUser;
+
     public Event(String eventName, String description) {
         this.eventName = eventName;
         this.description = description;
@@ -62,7 +64,8 @@ public class Event {
      * @param isFavorite Добавлено ли событие в избранное
      */
     public Event(int id, String eventName, String eventPlace, String description,
-                 String imagePreview, String city, String eventType, boolean isFavorite) {
+                 String imagePreview, String city, String eventType, boolean isFavorite,
+                 boolean createdByUser) {
         this.id = id;
         this.eventName = eventName;
         this.eventPlace = eventPlace;
@@ -71,10 +74,12 @@ public class Event {
         this.city = city;
         this.eventType = eventType;
         this.isFavorite = isFavorite;
+        this.createdByUser = createdByUser;
     }
 
     public Event(String eventName, String eventPlace, String description,
-                 String imagePreview, String city, String eventType, boolean isFavorite) {
+                 String imagePreview, String city, String eventType, boolean isFavorite,
+                 boolean createdByUser) {
         this.eventName = eventName;
         this.eventPlace = eventPlace;
         this.description = description;
@@ -82,6 +87,16 @@ public class Event {
         this.city = city;
         this.eventType = eventType;
         this.isFavorite = isFavorite;
+        this.createdByUser = createdByUser;
+    }
+
+    public Event(String eventName, String eventPlace, String description,
+                 String city, String eventType) {
+        this.eventName = eventName;
+        this.eventPlace = eventPlace;
+        this.description = description;
+        this.city = city;
+        this.eventType = eventType;
     }
 
     public int getId() {
@@ -147,5 +162,13 @@ public class Event {
 
     public void setEventType(String eventType) {
         this.eventType = eventType;
+    }
+
+    public boolean isCreatedByUser() {
+        return createdByUser;
+    }
+
+    public void setCreatedByUser(boolean createdByUser) {
+        this.createdByUser = createdByUser;
     }
 }

@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mobile_study";
 
     private static final String EVENT_TABLE_NAME = "events";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String EVENT_COLUMN_ID = "id";
     private static final String EVENT_COLUMN_EVENT_NAME = "event_name";
@@ -29,6 +29,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String EVENT_COLUMN_EVENT_IMAGE_PREVIEW = "event_image_preview";
     private static final String EVENT_COLUMN_EVENT_TYPE = "event_type";
 
+    private static final String EVENT_COLUMN_EVENT_CREATED_BY_USER = "event_created_by_user";
+
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -37,12 +39,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE " + EVENT_TABLE_NAME + "(" +
-                EVENT_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                EVENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 EVENT_COLUMN_EVENT_NAME + " TEXT, " +
                 EVENT_COLUMN_EVENT_PLACE + " TEXT, " +
                 EVENT_COLUMN_EVENT_DESCRIPTION + " TEXT, " +
                 EVENT_COLUMN_EVENT_CITY + " TEXT, " +
                 EVENT_COLUMN_EVENT_IS_FAVORITE + " INTEGER, " +
+                EVENT_COLUMN_EVENT_CREATED_BY_USER + " INTEGER, " +
                 EVENT_COLUMN_EVENT_TYPE + " TEXT, " +
                 EVENT_COLUMN_EVENT_IMAGE_PREVIEW + " TEXT);");
     }
@@ -71,6 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     int descriptionIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_DESCRIPTION);
                     int cityIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CITY);
                     int isFavoriteIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IS_FAVORITE);
+                    int createdByUserIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CREATED_BY_USER);
                     int eventTypeIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_TYPE);
                     int imagePreviewIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IMAGE_PREVIEW);
 
@@ -81,10 +85,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String description = cursor.getString(descriptionIndex);
                     String city = cursor.getString(cityIndex);
                     boolean isFavorite = cursor.getInt(isFavoriteIndex) == 1;
+                    boolean createdByUser = cursor.getInt(createdByUserIndex) == 1;
                     String imagePreview = cursor.getString(imagePreviewIndex);
                     String eventType = cursor.getString(eventTypeIndex);
 
-                    events.add(new Event(id, name, place, description, imagePreview, city, eventType, isFavorite));
+                    events.add(new Event(id, name, place, description, imagePreview, city, eventType, isFavorite, createdByUser));
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -117,6 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     int placeIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_PLACE);
                     int descriptionIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_DESCRIPTION);
                     int isFavoriteIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IS_FAVORITE);
+                    int createdByUserIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CREATED_BY_USER);
                     int imagePreviewIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IMAGE_PREVIEW);
 
                     int id = cursor.getInt(idIndex);
@@ -124,9 +130,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String place = cursor.getString(placeIndex);
                     String description = cursor.getString(descriptionIndex);
                     boolean isFavorite = cursor.getInt(isFavoriteIndex) == 1;
+                    boolean createdByUser = cursor.getInt(createdByUserIndex) == 1;
                     String imagePreview = cursor.getString(imagePreviewIndex);
 
-                    filteredList.add(new Event(id, name, place, description, imagePreview, city, eventType, isFavorite));
+                    filteredList.add(new Event(id, name, place, description, imagePreview, city, eventType, isFavorite, createdByUser));
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -135,6 +142,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         return filteredList;
+    }
+
+    public Event getEventById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = EVENT_COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        Cursor cursor = db.query(
+                EVENT_TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex(EVENT_COLUMN_ID);
+                int nameIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_NAME);
+                int placeIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_PLACE);
+                int descriptionIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_DESCRIPTION);
+                int cityIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CITY);
+                int isFavoriteIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IS_FAVORITE);
+                int createdByUserIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CREATED_BY_USER);
+                int imagePreviewIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IMAGE_PREVIEW);
+                int eventTypeIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_TYPE);
+
+                int eventId = cursor.getInt(idIndex);
+                String name = cursor.getString(nameIndex);
+                String place = cursor.getString(placeIndex);
+                String description = cursor.getString(descriptionIndex);
+                String city = cursor.getString(cityIndex);
+                boolean isFavorite = cursor.getInt(isFavoriteIndex) == 1;
+                boolean createdByUser = cursor.getInt(createdByUserIndex) == 1;
+                String imagePreview = cursor.getString(imagePreviewIndex);
+                String eventType = cursor.getString(eventTypeIndex);
+
+                return new Event(eventId, name, place, description, imagePreview, city, eventType, isFavorite, createdByUser);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -157,6 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     int descriptionIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_DESCRIPTION);
                     int cityIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CITY);
                     int isFavoriteIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IS_FAVORITE);
+                    int createdByUserIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_CREATED_BY_USER);
                     int imagePreviewIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_IMAGE_PREVIEW);
                     int eventTypeIndex = cursor.getColumnIndex(EVENT_COLUMN_EVENT_TYPE);
 
@@ -165,11 +222,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String place = cursor.getString(placeIndex);
                     String description = cursor.getString(descriptionIndex);
                     boolean isFavorite = cursor.getInt(isFavoriteIndex) == 1;
+                    boolean createdByUser = cursor.getInt(createdByUserIndex) == 1;
                     String imagePreview = cursor.getString(imagePreviewIndex);
                     String city = cursor.getString(cityIndex);
                     String eventType = cursor.getString(eventTypeIndex);
 
-                    filteredList.add(new Event(id, name, place, description, imagePreview, city, eventType, isFavorite));
+                    filteredList.add(new Event(id, name, place, description, imagePreview, city, eventType, isFavorite, createdByUser));
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -209,11 +267,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(EVENT_COLUMN_ID, event.getId());
+//        values.put(EVENT_COLUMN_ID, event.getId());
         values.put(EVENT_COLUMN_EVENT_CITY, event.getCity());
         values.put(EVENT_COLUMN_EVENT_DESCRIPTION, event.getDescription());
         values.put(EVENT_COLUMN_EVENT_NAME, event.getEventName());
         values.put(EVENT_COLUMN_EVENT_IS_FAVORITE, event.getIsFavorite() ? 1 : 0);
+        values.put(EVENT_COLUMN_EVENT_CREATED_BY_USER, event.isCreatedByUser() ? 1 : 0);
         values.put(EVENT_COLUMN_EVENT_IMAGE_PREVIEW, event.getImagePreview());
         values.put(EVENT_COLUMN_EVENT_PLACE, event.getEventPlace());
         values.put(EVENT_COLUMN_EVENT_TYPE, event.getEventType());
@@ -231,13 +290,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateEventById(int id, Event newEvent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(EVENT_COLUMN_ID, newEvent.getId());
+//        values.put(EVENT_COLUMN_ID, newEvent.getId());
         values.put(EVENT_COLUMN_EVENT_CITY, newEvent.getCity());
         values.put(EVENT_COLUMN_EVENT_DESCRIPTION, newEvent.getDescription());
         values.put(EVENT_COLUMN_EVENT_NAME, newEvent.getEventName());
         values.put(EVENT_COLUMN_EVENT_IS_FAVORITE, newEvent.getIsFavorite());
+        values.put(EVENT_COLUMN_EVENT_CREATED_BY_USER, newEvent.isCreatedByUser());
         values.put(EVENT_COLUMN_EVENT_IMAGE_PREVIEW, newEvent.getImagePreview());
-        values.put(EVENT_COLUMN_EVENT_PLACE, newEvent.getEventPlace());
         values.put(EVENT_COLUMN_EVENT_PLACE, newEvent.getEventPlace());
 
         int rowsAffected = db.update(EVENT_TABLE_NAME, values, EVENT_COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
