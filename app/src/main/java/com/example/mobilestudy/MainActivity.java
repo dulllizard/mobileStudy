@@ -1,15 +1,22 @@
 package com.example.mobilestudy;
 
+import static com.example.mobilestudy.utils.NetworkUtils.generateURL;
+import static com.example.mobilestudy.utils.NetworkUtils.generateURLListEventByCityAndType;
+import static com.example.mobilestudy.utils.NetworkUtils.generateURLPlaceById;
+import static com.example.mobilestudy.utils.NetworkUtils.getResponseFromURL;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 
 import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.data.DummyDatabaseCard;
+import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.ActivityMainBinding;
 import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.create.CreateFragment;
@@ -20,7 +27,13 @@ import com.example.mobilestudy.ui.home.HomeFragment;
 import com.example.mobilestudy.ui.map.MapFragment;
 import com.example.mobilestudy.ui.settings.SettingsFragment;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -55,6 +68,75 @@ public class MainActivity extends AppCompatActivity
      */
     private DummyDatabaseCard dummyDatabaseCard;
 
+    class KudaGoAPIQueryTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            String response = null;
+            try {
+                response = getResponseFromURL(urls[0]);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.getJSONArray("results");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject eventInfo = jsonArray.getJSONObject(i);
+                    String eventName = eventInfo.getString("title");
+                    String eventDescription = eventInfo.getString("description");
+                    JSONObject placeObject = eventInfo.getJSONObject("place");
+                    int placeId = placeObject.getInt("id");
+
+                    JSONArray imageArray = eventInfo.getJSONArray("images");
+                    JSONObject imageInfo = imageArray.getJSONObject(0);
+                    String imageURL = imageInfo.getString("image");
+
+                    new GetPlaceInfoTask().execute(placeId, eventName, eventDescription, imageURL);
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    class GetPlaceInfoTask extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... params) {
+            int placeId = (int) params[0];
+            String eventName = (String) params[1];
+            String eventDescription = (String) params[2];
+            String imageURL = (String) params[3];
+            String eventPlace = null;
+            try {
+                URL placeURL = generateURLPlaceById(String.valueOf(placeId));
+                String placeResponse = getResponseFromURL(placeURL);
+                JSONObject placeInfo = new JSONObject(placeResponse);
+                eventPlace = placeInfo.getString("address");
+            } catch (JSONException | IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            Event event = new Event(eventName, eventPlace, eventDescription, imageURL, "Красноярск", "Выставки", false, false);
+            dbHelper.addEvent(event);
+
+            String result = eventName + "\n" + eventDescription + "\n"
+                    + placeId + "\n" + imageURL + "\n" + eventPlace;
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.framelayout)).updateEventList();
+        }
+    }
+
     /**
      * Метод, вызываемый при создании активности.
      *
@@ -66,8 +148,11 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        dbHelper = new DatabaseHelper(getApplicationContext());
-//        dbHelper.deleteAllEvents();
+        dbHelper = new DatabaseHelper(getApplicationContext());
+        dbHelper.deleteAllEvents();
+        URL generatedURL = generateURLListEventByCityAndType("krasnoyarsk", "exhibition");
+        new KudaGoAPIQueryTask().execute(generatedURL);
+
 //        dummyDatabaseCard = DummyDatabaseCard.getInstance();
 //        List<Event> allEvents = dummyDatabaseCard.getAllCards();
 //        for (Event event : allEvents) {
