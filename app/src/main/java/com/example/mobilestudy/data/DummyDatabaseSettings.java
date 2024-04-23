@@ -18,7 +18,7 @@ public class DummyDatabaseSettings {
         setEventType("Выставки");
 
         availableCities = new String[]{"Красноярск", "Москва", "Новосибирск"};
-        availableEventTypes = new String[]{"Выставки", "Концерты"};
+        availableEventTypes = new String[]{"Выставки", "Образование"};
 
     }
 
