@@ -111,6 +111,16 @@ public class FavoritesFragment extends Fragment {
             }
         });
 
+        adapter.setOnButtonDeleteClickListener(new EventAdapter.onButtonDeleteListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                Event selectedEvent = eventList.get(position);
+                int id = selectedEvent.getId();
+                dbHelper.deleteEventById(id);
+                updateNoteList();
+            }
+        });
+
         adapter.setOnButtonShowMoreClickListener(new EventAdapter.OnButtonShowMoreClickListener() {
             @Override
             public void onShowMoreClick(int position) {

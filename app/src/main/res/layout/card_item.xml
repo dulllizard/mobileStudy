@@ -64,6 +64,21 @@
             android:textSize="11sp" />
 
         <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_below="@+id/cardImage"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:backgroundTint="@color/colorActive"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <Button
             android:id="@+id/cardShowMoreButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"

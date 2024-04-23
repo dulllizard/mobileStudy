@@ -45,6 +45,11 @@ public class Event {
      */
     private String imagePreview;
 
+    public Event(String eventName, String description) {
+        this.eventName = eventName;
+        this.description = description;
+    }
+
     /**
      * Конструктор события
      * @param id id события
@@ -59,6 +64,17 @@ public class Event {
     public Event(int id, String eventName, String eventPlace, String description,
                  String imagePreview, String city, String eventType, boolean isFavorite) {
         this.id = id;
+        this.eventName = eventName;
+        this.eventPlace = eventPlace;
+        this.description = description;
+        this.imagePreview = imagePreview;
+        this.city = city;
+        this.eventType = eventType;
+        this.isFavorite = isFavorite;
+    }
+
+    public Event(String eventName, String eventPlace, String description,
+                 String imagePreview, String city, String eventType, boolean isFavorite) {
         this.eventName = eventName;
         this.eventPlace = eventPlace;
         this.description = description;

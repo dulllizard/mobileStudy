@@ -33,6 +33,8 @@ public class SettingsFragment extends Fragment {
      */
     private OnBackButtonClickListener backButtonClickListener;
 
+    private OnCreateButtonClickListener createButtonClickListener;
+
     /**
      * Настройки, храниящиеся во внутренней памяти
      */
@@ -50,6 +52,12 @@ public class SettingsFragment extends Fragment {
             backButtonClickListener = (OnBackButtonClickListener) context;
         } else {
             throw new ClassCastException(context.toString() + " must implement OnBackButtonClickListener");
+        }
+
+        if (context instanceof OnCreateButtonClickListener) {
+            createButtonClickListener = (OnCreateButtonClickListener) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement OnCreateButtonClickListener");
         }
     }
 
@@ -101,6 +109,13 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createButtonClickListener.onCreateButtonClick();
+            }
+        });
+
         return view;
     }
 
@@ -114,5 +129,9 @@ public class SettingsFragment extends Fragment {
          * Вызывается при нажатии кнопки "назад".
          */
         void onBackButtonClick();
+    }
+
+    public interface OnCreateButtonClickListener {
+        void onCreateButtonClick();
     }
 }

@@ -12,6 +12,7 @@ import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.data.DummyDatabaseCard;
 import com.example.mobilestudy.databinding.ActivityMainBinding;
 import com.example.mobilestudy.dto.Event;
+import com.example.mobilestudy.ui.create.CreateFragment;
 import com.example.mobilestudy.ui.detail.DetailFragment;
 import com.example.mobilestudy.ui.favorites.FavoritesFragment;
 import com.example.mobilestudy.ui.home.HomeFragment;
@@ -26,9 +27,11 @@ import kotlin.jvm.functions.Function1;
 public class MainActivity extends AppCompatActivity
         implements HomeFragment.OnSettingsButtonClickListener,
         SettingsFragment.OnBackButtonClickListener,
+        SettingsFragment.OnCreateButtonClickListener,
         DetailFragment.OnBackButtonClickListener,
         FavoritesFragment.OnSettingsButtonClickListener,
-        MapFragment.OnSettingsButtonClickListener {
+        MapFragment.OnSettingsButtonClickListener,
+        CreateFragment.OnBackButtonClickListener{
 
     /**
      * Привязка к макету активности
@@ -116,6 +119,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onSettingsButtonClick() {
         replace(new SettingsFragment());
+    }
+
+    @Override
+    public void onCreateButtonClick() {
+        replace(new CreateFragment());
     }
 
     /**

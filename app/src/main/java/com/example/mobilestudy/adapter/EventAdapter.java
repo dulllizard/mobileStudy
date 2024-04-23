@@ -25,6 +25,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         public Button cardGoingButton;
 
         public Button showMoreButton;
+        public Button deleteButton;
 
         public EventViewHolder(View view) {
             super(view);
@@ -33,6 +34,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             cardGoingButton = view.findViewById(R.id.cardGoingButton);
             showMoreButton = view.findViewById(R.id.cardShowMoreButton);
             imagePreview = view.findViewById(R.id.imagePreview);
+            deleteButton = view.findViewById(R.id.deleteButton);
         }
     }
 
@@ -90,6 +92,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 }
             }
         });
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttonDeleteListener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        buttonDeleteListener.onDeleteClick(position);
+                    }
+                }
+            }
+        });
     }
 
     public interface OnButtonGoingClickListener {
@@ -100,6 +114,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         void onShowMoreClick(int position);
     }
 
+    public interface onButtonDeleteListener {
+        void onDeleteClick(int position);
+    }
+
+    private onButtonDeleteListener buttonDeleteListener;
+
     private OnButtonShowMoreClickListener buttonShowMoreClickListener;
     private OnButtonGoingClickListener buttonGoingListener;
 
@@ -109,6 +129,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     public void setOnButtonShowMoreClickListener(OnButtonShowMoreClickListener listener) {
         buttonShowMoreClickListener = listener;
+    }
+
+    public void setOnButtonDeleteClickListener(onButtonDeleteListener listener) {
+        buttonDeleteListener = listener;
     }
 
     @Override

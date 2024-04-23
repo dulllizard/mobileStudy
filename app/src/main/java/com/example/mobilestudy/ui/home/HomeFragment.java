@@ -145,6 +145,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        adapter.setOnButtonDeleteClickListener(new EventAdapter.onButtonDeleteListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                Event selectedEvent = eventList.get(position);
+                int id = selectedEvent.getId();
+                dbHelper.deleteEventById(id);
+                updateEventList();
+            }
+        });
+
         binding.settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
