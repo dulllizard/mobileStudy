@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,13 @@ import com.example.mobilestudy.R;
 import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.databinding.FragmentMapBinding;
 import com.example.mobilestudy.dto.Event;
+import com.example.mobilestudy.ui.detail.DetailFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -126,6 +129,43 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Останавливаем ExecutorService после выполнения задачи
         executorService.shutdown();
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                // Получаем название события из метки
+                String eventName = marker.getTitle();
+
+                // Находим событие по названию
+                Event event = null;
+                for (Event e : events) {
+                    if (e.getEventName().equals(eventName)) {
+                        event = e;
+                        break;
+                    }
+                }
+
+                // Если событие найдено, создаем и отображаем DetailFragment
+                if (event != null) {
+                    DetailFragment detailFragment = new DetailFragment();
+                    Bundle args = new Bundle();
+                    args.putString("eventName", event.getEventName());
+                    args.putString("eventDescription", event.getDescription());
+                    args.putString("eventPreview", event.getImagePreview());
+                    detailFragment.setArguments(args);
+
+                    // Заменяем текущий фрагмент на DetailFragment
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.framelayout, detailFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+
+                // Возвращаем true, чтобы не вызывать стандартное действие при клике на метку
+                return true;
+            }
+        });
     }
 
     /**
