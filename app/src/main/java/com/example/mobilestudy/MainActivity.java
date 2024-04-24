@@ -85,57 +85,57 @@ public class MainActivity extends AppCompatActivity
         setContentView(binding.getRoot());
 
         dbHelper = new DatabaseHelper(getApplicationContext());
-        dbHelper.deleteAllEvents();
+//        dbHelper.deleteAllEvents();
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+//        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 //        List<String> cities = Arrays.asList("krasnoyarsk", "krasnoyarsk", "msk",
 //                "msk", "nsk", "nsk");
 //        List<String> eventTypes = Arrays.asList("exhibition", "education",
 //                "exhibition", "education", "exhibition", "education");
-        List<String> cities = Arrays.asList("krasnoyarsk");
-        List<String> eventTypes = Arrays.asList("exhibition");
-
-        for (int i = 0; i < cities.size(); i++) {
-            String city = cities.get(i);
-            String eventType = eventTypes.get(i);
-            URL generatedURL = generateURLListEventByCityAndType(city, eventType);
-
-            executorService.execute(() -> {
-                try {
-                    String response = getResponseFromURL(generatedURL);
-
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray jsonArray = jsonObject.getJSONArray("results");
-                    for (int j = 0; j < jsonArray.length(); j++) {
-                        JSONObject eventInfo = jsonArray.getJSONObject(j);
-                        String eventName = eventInfo.getString("title");
-                        String eventDescription = eventInfo.getString("description");
-                        JSONObject placeObject = eventInfo.getJSONObject("place");
-                        int placeId = placeObject.getInt("id");
-
-                        JSONArray imageArray = eventInfo.getJSONArray("images");
-                        JSONObject imageInfo = imageArray.getJSONObject(0);
-                        String imageURL = imageInfo.getString("image");
-
-                        URL placeURL = generateURLPlaceById(String.valueOf(placeId));
-                        String placeResponse = getResponseFromURL(placeURL);
-                        JSONObject placeInfo = new JSONObject(placeResponse);
-                        String eventPlace = placeInfo.getString("address");
-
-                        Event event = new Event(eventName, eventPlace, eventDescription, imageURL,
-                                Converter.convertCity(city), Converter.convertCity(eventType),
-                                false, false);
-                        dbHelper.addEvent(event);
-                    }
-
-                } catch (JSONException | IOException e) {
-
-                }
-            });
-        }
-
-        executorService.shutdown();
+//        List<String> cities = Arrays.asList("krasnoyarsk");
+//        List<String> eventTypes = Arrays.asList("exhibition");
+//
+//        for (int i = 0; i < cities.size(); i++) {
+//            String city = cities.get(i);
+//            String eventType = eventTypes.get(i);
+//            URL generatedURL = generateURLListEventByCityAndType(city, eventType);
+//
+//            executorService.execute(() -> {
+//                try {
+//                    String response = getResponseFromURL(generatedURL);
+//
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    JSONArray jsonArray = jsonObject.getJSONArray("results");
+//                    for (int j = 0; j < jsonArray.length(); j++) {
+//                        JSONObject eventInfo = jsonArray.getJSONObject(j);
+//                        String eventName = eventInfo.getString("title");
+//                        String eventDescription = eventInfo.getString("description");
+//                        JSONObject placeObject = eventInfo.getJSONObject("place");
+//                        int placeId = placeObject.getInt("id");
+//
+//                        JSONArray imageArray = eventInfo.getJSONArray("images");
+//                        JSONObject imageInfo = imageArray.getJSONObject(0);
+//                        String imageURL = imageInfo.getString("image");
+//
+//                        URL placeURL = generateURLPlaceById(String.valueOf(placeId));
+//                        String placeResponse = getResponseFromURL(placeURL);
+//                        JSONObject placeInfo = new JSONObject(placeResponse);
+//                        String eventPlace = placeInfo.getString("address");
+//
+//                        Event event = new Event(eventName, eventPlace, eventDescription, imageURL,
+//                                Converter.convertCity(city), Converter.convertType(eventType),
+//                                false, false);
+//                        dbHelper.addEvent(event);
+//                    }
+//
+//                } catch (JSONException | IOException e) {
+//
+//                }
+//            });
+//        }
+//
+//        executorService.shutdown();
 
         bottomNavigation = binding.bottomNavigation;
 

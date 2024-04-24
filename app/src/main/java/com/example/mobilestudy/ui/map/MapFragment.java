@@ -1,6 +1,10 @@
 package com.example.mobilestudy.ui.map;
 
+import android.app.Activity;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,12 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mobilestudy.R;
+import com.example.mobilestudy.data.DatabaseHelper;
 import com.example.mobilestudy.databinding.FragmentMapBinding;
+import com.example.mobilestudy.dto.Event;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -35,6 +48,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private OnSettingsButtonClickListener settingsButtonClickListener;
 
     private GoogleMap mMap;
+
+    private DatabaseHelper dbHelper;
+
+    private Activity activity;
 
     /**
      * Метод, вызываемый при присоединении фрагмента к его контексту.
@@ -65,6 +82,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        dbHelper = new DatabaseHelper(getContext());
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -84,17 +103,68 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Устанавливаем координаты перекрёстка
-        LatLng crossroads = new LatLng(47.249912481336494, 39.69719647988453);
+        // Получаем геокодер
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
 
-        // Добавляем маркер на карту
-        mMap.addMarker(new MarkerOptions().position(crossroads).title("Перекресток"));
+        // Получаем список всех событий
+        List<Event> events = dbHelper.getEventsByCityAndEventType("Красноярск", "Выставки");
 
-        // Включаем или выключаем отображение зданий
-        mMap.setBuildingsEnabled(true);
+        activity = getActivity();
 
-        // Включаем или выключаем внутреннюю картографию
-        mMap.setIndoorEnabled(true);
+        // Создаем ExecutorService
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        // Выполняем задачу загрузки и отображения меток на карте
+        executorService.execute(() -> {
+            for (Event event : events) {
+                addMarkerForEvent(geocoder, event);
+            }
+
+            // Перемещаем камеру на город Красноярск
+            moveCameraToCity(geocoder, "Красноярск");
+        });
+
+        // Останавливаем ExecutorService после выполнения задачи
+        executorService.shutdown();
+    }
+
+    /**
+     * Метод для добавления метки на карту для заданного события.
+     */
+    private void addMarkerForEvent(Geocoder geocoder, Event event) {
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(event.getEventPlace() + ", " + event.getCity(), 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                double latitude = address.getLatitude();
+                double longitude = address.getLongitude();
+
+                // Устанавливаем метку на карту
+                LatLng latLng = new LatLng(latitude, longitude);
+                activity.runOnUiThread(() -> mMap.addMarker(new MarkerOptions().position(latLng).title(event.getEventName())));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод для перемещения камеры на указанный город.
+     */
+    private void moveCameraToCity(Geocoder geocoder, String cityName) {
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(cityName, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                double latitude = address.getLatitude();
+                double longitude = address.getLongitude();
+
+                LatLng latLng = new LatLng(latitude, longitude);
+                activity.runOnUiThread(() -> mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
