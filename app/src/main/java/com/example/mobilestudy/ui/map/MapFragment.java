@@ -9,14 +9,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.mobilestudy.databinding.FragmentMapBinding;
 
+import com.example.mobilestudy.R;
+import com.example.mobilestudy.databinding.FragmentMapBinding;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
  * Фрагмент, отображающий карту событий.
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     /**
      * Поле для привязки макета фрагмента
@@ -27,6 +33,8 @@ public class MapFragment extends Fragment {
      * Поле для слушателя нажатия кнопки настроек
      */
     private OnSettingsButtonClickListener settingsButtonClickListener;
+
+    private GoogleMap mMap;
 
     /**
      * Метод, вызываемый при присоединении фрагмента к его контексту.
@@ -57,6 +65,11 @@ public class MapFragment extends Fragment {
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
         binding.settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +78,23 @@ public class MapFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Устанавливаем координаты перекрёстка
+        LatLng crossroads = new LatLng(47.249912481336494, 39.69719647988453);
+
+        // Добавляем маркер на карту
+        mMap.addMarker(new MarkerOptions().position(crossroads).title("Перекресток"));
+
+        // Включаем или выключаем отображение зданий
+        mMap.setBuildingsEnabled(true);
+
+        // Включаем или выключаем внутреннюю картографию
+        mMap.setIndoorEnabled(true);
     }
 
     /**

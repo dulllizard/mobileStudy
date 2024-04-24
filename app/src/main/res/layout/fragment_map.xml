@@ -6,14 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.map.MapFragment">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/topNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <TextView
@@ -68,36 +72,20 @@
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="350dp"
-                android:layout_height="600dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="32dp">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/mapImageDescription"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/map_example" />
-
-                <ImageButton
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="314dp"
-                    android:layout_marginEnd="188dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/mapMarkDescription"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/mark" />
-
-            </RelativeLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+        <fragment
+            android:layout_marginTop="20dp"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topNav" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </RelativeLayout>

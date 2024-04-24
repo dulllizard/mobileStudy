@@ -95,6 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             if (cursor != null) {
                 cursor.close();
+                db.close();
             }
         }
         return events;
@@ -139,6 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             if (cursor != null) {
                 cursor.close();
+                db.close();
             }
         }
         return filteredList;
@@ -187,6 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             if (cursor != null) {
                 cursor.close();
+                db.close();
             }
         }
 
@@ -233,6 +236,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             if (cursor != null) {
                 cursor.close();
+                db.close();
             }
         }
         return filteredList;
@@ -246,6 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteEventById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(EVENT_TABLE_NAME, EVENT_COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
         return rowsAffected > 0;
     }
 
@@ -256,6 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteAllEvents() {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsAffected = db.delete(EVENT_TABLE_NAME, null, null);
+        db.close();
         return rowsAffected > 0;
     }
 
@@ -277,6 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(EVENT_COLUMN_EVENT_TYPE, event.getEventType());
 
         long newRowId = db.insert(EVENT_TABLE_NAME, null, values);
+        db.close();
         return newRowId != -1;
     }
 
@@ -298,6 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(EVENT_COLUMN_EVENT_PLACE, newEvent.getEventPlace());
 
         int rowsAffected = db.update(EVENT_TABLE_NAME, values, EVENT_COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
         return rowsAffected > 0;
     }
 
@@ -316,5 +324,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] selectionArgs = {String.valueOf(id)};
 
         db.update(EVENT_TABLE_NAME, values, selection, selectionArgs);
+        db.close();
     }
 }
