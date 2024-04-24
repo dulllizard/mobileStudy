@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.data.DatabaseHelper;
@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -58,6 +59,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private DummyDatabaseSettings settings;
 
     private Activity activity;
+
+    private List<Marker> markers;
 
     /**
      * Метод, вызываемый при присоединении фрагмента к его контексту.
@@ -119,6 +122,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Получаем список всех событий
         List<Event> events = dbHelper.getEventsByCityAndEventType(settings.getCity(), settings.getEventType());
 
+        markers = new ArrayList<>();
+
         activity = getActivity();
 
         // Создаем ExecutorService
@@ -136,6 +141,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Останавливаем ExecutorService после выполнения задачи
         executorService.shutdown();
+
+        SearchView searchView = binding.searchView;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterMarkers(newText);
+                return true;
+            }
+        });
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
@@ -188,7 +207,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 // Устанавливаем метку на карту
                 LatLng latLng = new LatLng(latitude, longitude);
-                activity.runOnUiThread(() -> mMap.addMarker(new MarkerOptions().position(latLng).title(event.getEventName())));
+                activity.runOnUiThread(() -> {
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(event.getEventName()));
+                    markers.add(marker);
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -223,5 +245,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
          * Вызывается при нажатии кнопки настроек.
          */
         void onSettingsButtonClick();
+    }
+
+    private void filterMarkers(String query) {
+        for (Marker marker : markers) {
+            if (!marker.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                marker.setVisible(false);
+            } else {
+                marker.setVisible(true);
+            }
+        }
     }
 }
