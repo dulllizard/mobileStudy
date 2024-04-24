@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.mobilestudy.R;
 import com.example.mobilestudy.data.DatabaseHelper;
+import com.example.mobilestudy.data.DummyDatabaseSettings;
 import com.example.mobilestudy.databinding.FragmentMapBinding;
 import com.example.mobilestudy.dto.Event;
 import com.example.mobilestudy.ui.detail.DetailFragment;
@@ -54,6 +55,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private DatabaseHelper dbHelper;
 
+    private DummyDatabaseSettings settings;
+
     private Activity activity;
 
     /**
@@ -85,6 +88,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        settings = DummyDatabaseSettings.getInstance();
+
         dbHelper = new DatabaseHelper(getContext());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -106,11 +111,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
+
+
         // Получаем геокодер
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
 
         // Получаем список всех событий
-        List<Event> events = dbHelper.getEventsByCityAndEventType("Красноярск", "Выставки");
+        List<Event> events = dbHelper.getEventsByCityAndEventType(settings.getCity(), settings.getEventType());
 
         activity = getActivity();
 
@@ -124,7 +131,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
 
             // Перемещаем камеру на город Красноярск
-            moveCameraToCity(geocoder, "Красноярск");
+            moveCameraToCity(geocoder, settings.getCity());
         });
 
         // Останавливаем ExecutorService после выполнения задачи

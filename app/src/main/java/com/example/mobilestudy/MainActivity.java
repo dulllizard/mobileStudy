@@ -86,16 +86,16 @@ public class MainActivity extends AppCompatActivity
 
         dbHelper = new DatabaseHelper(getApplicationContext());
 //        dbHelper.deleteAllEvents();
-
+//
 //        ExecutorService executorService = Executors.newSingleThreadExecutor();
-
+//
 //        List<String> cities = Arrays.asList("krasnoyarsk", "krasnoyarsk", "msk",
 //                "msk", "nsk", "nsk");
 //        List<String> eventTypes = Arrays.asList("exhibition", "education",
 //                "exhibition", "education", "exhibition", "education");
 //        List<String> cities = Arrays.asList("krasnoyarsk");
 //        List<String> eventTypes = Arrays.asList("exhibition");
-//
+
 //        for (int i = 0; i < cities.size(); i++) {
 //            String city = cities.get(i);
 //            String eventType = eventTypes.get(i);
